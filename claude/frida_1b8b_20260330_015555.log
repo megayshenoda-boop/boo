@@ -1,0 +1,67 @@
+[*] Log file: D:\CascadeProjects\claude\frida_1b8b_20260330_015555.log
+======================================================================
+  FRIDA 0x1B8B HUNTER
+  Goal: Capture checksum + verify byte computation
+======================================================================
+[*] Connected via USB
+[*] Found game process: Conquerors (PID 6626)
+[INFO] Hooked transport funcs: libc.so::send, libc.so::sendto, libc.so::write, libssl.so::SSL_write
+[INFO] Found module: libsoundtrigger.so at 0x7f2e0aade000 size=77824
+[INFO] === ALL HOOKS READY ===
+[INFO] Now log in to the game. 0x1B8B is sent during login sequence.
+[INFO] We need to capture: checksum formula + verify formula
+[*] Attached to PID 6626
+[*] Hooked process count: 1
+
+======================================================================
+  WAITING FOR 0x1B8B PACKET...
+  If already logged in: force-close and re-open the game
+  0x1B8B is sent during the login/init sequence
+  Press Ctrl+C to stop
+======================================================================
+
+[TX] via=write idx=1 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=write idx=2 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=write idx=3 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=write idx=4 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=write idx=5 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=write idx=6 fd=130 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=write idx=7 fd=130 peer_port=-1 game=False len=8 head=0000000001000000
+[TX] via=write idx=8 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=sendto idx=1 fd=84 peer_port=-1 game=False len=16 head=03000000000000002204000001000000
+[TX] via=write idx=9 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=sendto idx=2 fd=84 peer_port=-1 game=False len=16 head=03000000000000002404000001000000
+[TX] via=write idx=10 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=write idx=11 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=sendto idx=3 fd=84 peer_port=-1 game=False len=16 head=03000000000000002604000001000000
+[TX] via=sendto idx=4 fd=84 peer_port=-1 game=False len=16 head=03000000000000002804000001000000
+[TX] via=write idx=12 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=write idx=13 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=write idx=14 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=write idx=15 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=write idx=16 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=write idx=17 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=write idx=18 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=sendto idx=5 fd=84 peer_port=-1 game=False len=16 head=03000000000000002a04000001000000
+[TX] via=write idx=19 fd=93 peer_port=-1 game=False len=5 head=3530303030
+[TX] via=sendto idx=6 fd=84 peer_port=-1 game=False len=16 head=03000000000000002c04000001000000
+[TX] via=write idx=20 fd=29 peer_port=-1 game=False len=8 head=0100000000000000
+[TX] via=sendto idx=7 fd=84 peer_port=-1 game=False len=16 head=03000000000000002e04000001000000
+[TX] via=sendto idx=8 fd=84 peer_port=-1 game=False len=16 head=03000000000000003004000001000000
+[TX] via=sendto idx=9 fd=84 peer_port=-1 game=False len=16 head=03000000000000003204000001000000
+[TX] via=sendto idx=10 fd=84 peer_port=-1 game=False len=16 head=03000000000000003404000001000000
+[TX] via=sendto idx=11 fd=84 peer_port=-1 game=False len=16 head=03000000000000003604000001000000
+[TX] via=sendto idx=12 fd=84 peer_port=-1 game=False len=16 head=03000000000000003804000001000000
+[TX] via=sendto idx=13 fd=84 peer_port=-1 game=False len=16 head=03000000000000003a04000001000000
+[TX] via=sendto idx=14 fd=84 peer_port=-1 game=False len=16 head=03000000000000003c04000001000000
+[TX] via=sendto idx=15 fd=84 peer_port=-1 game=False len=16 head=03000000000000003e04000001000000
+[TX] via=sendto idx=16 fd=84 peer_port=-1 game=False len=16 head=03000000000000004004000001000000
+[TX] via=sendto idx=17 fd=84 peer_port=-1 game=False len=16 head=03000000000000004204000001000000
+[TX] via=sendto idx=18 fd=84 peer_port=-1 game=False len=16 head=03000000000000004404000001000000
+[TX] via=sendto idx=19 fd=84 peer_port=-1 game=False len=16 head=03000000000000004604000001000000
+[TX] via=sendto idx=20 fd=84 peer_port=-1 game=False len=16 head=03000000000000004804000001000000
+
+
+Captured 0 0x1B8B packets
+[*] Detached PID 6626
+Done!

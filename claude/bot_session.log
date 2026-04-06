@@ -1,0 +1,75 @@
+[23:07:37.235] [INFO] Using stored access key: 63f22dbfb60fae3ae3d7671491329518
+[23:07:37.236] [INFO] ============================================================
+[23:07:37.236] [INFO] IGG Conquerors - COMPLETE BOT
+[23:07:37.236] [INFO] ============================================================
+[23:07:37.236] [INFO] IGG ID: 577962733
+[23:07:37.236] [INFO] Access Key: 63f22dbfb60fae3ae3d7671491329518
+[23:07:47.809] [INFO] 
+[23:07:47.809] [INFO] === GAME STATE ===
+[23:07:47.809] [INFO]   Player: 🛡قرباش
+  Power: 1,318,053,957
+  VIP: 11
+  Resources:
+    food: 56,252,247
+    gold: 67,208
+    ore: 905,383
+    stone: 5,257,600
+    unknown: 18,348
+    wood: 21,862,565
+  Troops: 6,957,499,653 (4 types)
+  Heroes: 41
+  Items: 884 types
+    Speedups: 79817 items
+  Server Key: 0xb812ed0b
+  Unique opcodes: 229
+[23:07:47.813] [INFO] 
+[23:07:47.813] [INFO] ============================================================
+[23:07:47.813] [INFO] BOT ONLINE - Ready for commands
+[23:07:47.813] [INFO] ============================================================
+[23:07:47.813] [INFO] 
+[23:07:47.813] [INFO] === COMMANDS ===
+[23:07:47.813] [INFO] 
+[23:07:47.813] [INFO] -- March / Combat --
+[23:07:47.813] [INFO]   gather [x y] [slot]           - Gather resources (auto-search if no coords)
+[23:07:47.813] [INFO]   attack <x> <y> [slot]         - Attack target tile
+[23:07:47.813] [INFO]   scout <x> <y>                 - Scout target tile
+[23:07:47.813] [INFO]   find_monster [level]          - Search for monsters (level 1-5)
+[23:07:47.813] [INFO]   hunt [level] [slot]           - Find + attack monster (auto-rebel)
+[23:07:47.813] [INFO] 
+[23:07:47.813] [INFO] -- Building / Training --
+[23:07:47.813] [INFO]   train [type] [count]          - Train troops (type: 1=inf,2=ranged,4=cav,8=siege)
+[23:07:47.813] [INFO]   build <type> <slot> [op]      - Build/upgrade/demolish (op: 1=up,2=demolish,3=new)
+[23:07:47.813] [INFO]   upgrade <type> <slot>         - Upgrade shortcut
+[23:07:47.813] [INFO]   demolish <type> <slot>        - Demolish shortcut
+[23:07:47.813] [INFO]   research <tech_id> [cat]      - Start research
+[23:07:47.813] [INFO]   heal [slot]                   - Heal troops
+[23:07:47.813] [INFO] 
+[23:07:47.813] [INFO] -- Rewards / Daily --
+[23:07:47.813] [INFO]   daily                         - Collect ALL daily rewards (sign+online+gifts)
+[23:07:47.813] [INFO]   sign                          - Daily sign-in only
+[23:07:47.813] [INFO]   rewards                       - Collect all reward packets
+[23:07:47.813] [INFO]   quest_reward <id>             - Claim specific quest reward
+[23:07:47.813] [INFO]   achievement <id>              - Claim achievement reward
+[23:07:47.813] [INFO] 
+[23:07:47.813] [INFO] -- Items / Speedups --
+[23:07:47.813] [INFO]   use_item <id> [count]         - Use item (speedup, shield, etc.)
+[23:07:47.813] [INFO]   speedup [category]            - Use all speedups (general/build/research/train/heal)
+[23:07:47.813] [INFO]   speed_train <item_id> [slot]  - Speed up training with item
+[23:07:47.813] [INFO] 
+[23:07:47.813] [INFO] -- Alliance / Social --
+[23:07:47.813] [INFO]   alliance_help                 - Send alliance help to all
+[23:07:47.813] [INFO]   fire                          - Extinguish castle fire
+[23:07:47.813] [INFO] 
+[23:07:47.814] [INFO] -- Info / Debug --
+[23:07:47.814] [INFO]   view                          - Enable view (0x0CEB)
+[23:07:47.814] [INFO]   status                        - Connection stats
+[23:07:47.814] [INFO]   state                         - Game state (player, resources, troops)
+[23:07:47.814] [INFO]   items                         - Show inventory
+[23:07:47.814] [INFO]   troops                        - Show troop counts
+[23:07:47.814] [INFO]   packets                       - Unique opcodes received
+[23:07:47.814] [INFO]   raw <hex_opcode> [hex_data]   - Send raw packet
+[23:07:47.814] [INFO]   help                          - Show this help
+[23:07:47.814] [INFO]   quit                          - Disconnect
+[23:07:47.814] [INFO] 
+[23:07:47.814] [INFO] Shutting down...
+[23:07:47.814] [INFO] Bot stopped.

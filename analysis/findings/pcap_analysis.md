@@ -1,0 +1,94 @@
+# PCAP Data Analysis
+
+Found 88 PCAP files in D:\CascadeProjects
+  actions_capture.pcap: 462 packets
+  capture.pcap: 318 packets
+  capture2.pcap: 295 packets
+  PCAPdroid_25_Mar_07_05_12.pcap: 329 packets
+  PCAPdroid_25_Mar_07_29_40.pcap: 378 packets
+
+Total packets: 1782
+
+## Opcode Frequency (top 50):
+  0x026D:   66 packets
+  0x0042:   64 packets
+  0x0001:   59 packets
+  0x0033:   42 packets
+  0x099D:   31 packets
+  0x099E:   31 packets
+  0x036C:   30 packets
+  0x0043:   18 packets
+  0x0078:   17 packets
+  0x0601:   17 packets
+  0x009E:   15 packets
+  0x0077:   14 packets
+  0x007A:   14 packets
+  0x009D:   12 packets
+  0x0076:   12 packets
+  0x07C8:   12 packets
+  0x0064:   11 packets
+  0x0098:   11 packets
+  0x11F8:   11 packets
+  0x007B:   10 packets
+  0x0085:   10 packets
+  0x06EB:   10 packets
+  0x006E:    8 packets
+  0x020D:    8 packets
+  0x00B8:    8 packets
+  0x0CEB:    7 packets
+  0x00AA:    6 packets
+  0x0640:    6 packets
+  0x06C2:    6 packets
+  0x0AF3:    6 packets
+  0x0773:    6 packets
+  0x076C:    6 packets
+  0x0211:    6 packets
+  0x0701:    5 packets
+  0x0840:    5 packets
+  0x0709:    5 packets
+  0x0767:    5 packets
+  0x0769:    5 packets
+  0x039B:    5 packets
+  0x0654:    5 packets
+  0x004A:    5 packets
+  0x0034:    5 packets
+  0x01D4:    5 packets
+  0x0A00:    5 packets
+  0x0A0A:    5 packets
+  0x0A0B:    5 packets
+  0x0A02:    5 packets
+  0x07E4:    5 packets
+  0x0C4E:    5 packets
+  0x084E:    5 packets
+
+
+## Item Info (0x0064) Payloads:
+  len=1348: a8000000c900000028000000cb00000001000000cd00000003000000ce00000052000000d1000000
+
+## Building Info (0x0097) Payloads:
+  len=610: 200001000100080000000000000000000000000000020002000700000000000000000000000000000300030001000000000000000000000000000004
+
+## Castle Data (0x0038) Payloads:
+  len=830: 4500020000007a010000000000000300000000000000000000000500000001000000000000000c00000070170000000000000d000000f31e00000000
+  len=830: 4500020000007a010000000000000300000000000000000000000500000001000000000000000c00000070170000000000000d000000f31e00000000
+  len=830: 4500020000007a010000000000000300000000000000000000000500000001000000000000000c00000070170000000000000d000000f31e00000000
+
+## Soldier Info (0x06C2) Payloads:
+  len=112: 04000000010000000200f828000000000000020000000200301c000000000000040000000100a83f000000000000080000000100ce41000000000000
+
+## Hero Info (0x00AA) Payloads:
+  len=549: 05000000c90000001d000000018d060000010000000000000000b1040000020000000000000001000000010000000000000000000000010000000000
+
+## March Sync (0x006F) Payloads:
+
+## START_MARCH_NEW (0x0CE8) Client Payloads (encrypted):
+  len=54 src=59224 dst=7000: 4c55e2b23630a2a2aaca8b580daf727b4533f760cecf3e2b8282d9a3785643ef35bac715e1f18b580d309baec2353c60cecfe82b8282
+  len=50 src=53956 dst=7001: cf41f64ac3493e68dfe16e07f8789604b6cfd83f3b345b747779e5fc8dadaab0c041224a14376cb0da8294d3b3ced93f3b34
+  len=50 src=54894 dst=7001: 11f84fba472ee82e2b7791017e23692036992939bd62a472f12f1afa0bfb55b64617dd4c924193969cd46bd535982639bd62
+
+## HERO_RECRUIT (0x0323) Payloads:
+  len=11 src=59224 dst=7000: 000200c9000000ce000000
+
+## PASSWORD_CHECK (0x1B8B) Payloads:
+  len=22 src=53956 dst=7001: 6cd2d690276f0ec14661afb239374a676d7a078be580
+  len=22 src=54894 dst=7001: 5d92bab700a1b1a570d5ceea213f353f6b7278d3e388
