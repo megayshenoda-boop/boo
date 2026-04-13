@@ -1,0 +1,455 @@
+[
+  {
+    "opcode": "0x0065",
+    "current_meaning": "ITEM_USE",
+    "legacy_drift": false,
+    "evidence_level": "heartbeat_only",
+    "sources": [
+      "test_results.json"
+    ],
+    "status_counts": {
+      "NO_RESPONSE": 1
+    },
+    "top_responses": [
+      {
+        "response": "0x0042(8B)",
+        "count": 1
+      }
+    ],
+    "samples": [
+      {
+        "source": "test_results.json",
+        "opcode": "0x0065",
+        "name": "ITEM_USE (old)",
+        "status": "NO_RESPONSE",
+        "responses": [
+          "0x0042(8B)"
+        ],
+        "payload_size": 8,
+        "error_code": null
+      }
+    ]
+  },
+  {
+    "opcode": "0x009D",
+    "current_meaning": "OLD_BUILD",
+    "legacy_drift": false,
+    "evidence_level": "response_pattern_seen",
+    "sources": [
+      "test_results.json"
+    ],
+    "status_counts": {
+      "NO_RESPONSE": 1
+    },
+    "top_responses": [
+      {
+        "response": "0x026D(116B)",
+        "count": 2
+      },
+      {
+        "response": "0x026D(130B)",
+        "count": 1
+      },
+      {
+        "response": "0x036C(4B)",
+        "count": 1
+      }
+    ],
+    "samples": [
+      {
+        "source": "test_results.json",
+        "opcode": "0x009D",
+        "name": "OLD_BUILD",
+        "status": "NO_RESPONSE",
+        "responses": [
+          "0x026D(130B)",
+          "0x026D(116B)",
+          "0x036C(4B)",
+          "0x026D(116B)"
+        ],
+        "payload_size": 12,
+        "error_code": null
+      }
+    ]
+  },
+  {
+    "opcode": "0x00BF",
+    "current_meaning": "OLD_RESEARCH",
+    "legacy_drift": false,
+    "evidence_level": "heartbeat_only",
+    "sources": [
+      "test_results.json"
+    ],
+    "status_counts": {
+      "NO_RESPONSE": 1
+    },
+    "top_responses": [
+      {
+        "response": "0x0042(8B)",
+        "count": 1
+      }
+    ],
+    "samples": [
+      {
+        "source": "test_results.json",
+        "opcode": "0x00BF",
+        "name": "OLD_RESEARCH",
+        "status": "NO_RESPONSE",
+        "responses": [
+          "0x0042(8B)"
+        ],
+        "payload_size": 8,
+        "error_code": null
+      }
+    ]
+  },
+  {
+    "opcode": "0x06C3",
+    "current_meaning": "OLD_TRAIN",
+    "legacy_drift": false,
+    "evidence_level": "silent_or_unverified",
+    "sources": [
+      "test_results.json"
+    ],
+    "status_counts": {
+      "NO_RESPONSE": 1
+    },
+    "top_responses": [],
+    "samples": [
+      {
+        "source": "test_results.json",
+        "opcode": "0x06C3",
+        "name": "OLD_TRAIN",
+        "status": "NO_RESPONSE",
+        "responses": [],
+        "payload_size": 12,
+        "error_code": null
+      }
+    ]
+  },
+  {
+    "opcode": "0x0CEB",
+    "current_meaning": "ENABLE_VIEW in current protocol.py",
+    "legacy_drift": true,
+    "evidence_level": "response_pattern_seen",
+    "sources": [
+      "test_results.json"
+    ],
+    "status_counts": {
+      "GOT_RESPONSE": 1
+    },
+    "top_responses": [
+      {
+        "response": "0x0076(166B)",
+        "count": 1
+      },
+      {
+        "response": "0x0077(222B)",
+        "count": 1
+      },
+      {
+        "response": "0x0078(490B)",
+        "count": 1
+      },
+      {
+        "response": "0x0095(74B)",
+        "count": 1
+      },
+      {
+        "response": "0x007A(0B)",
+        "count": 1
+      },
+      {
+        "response": "0x0773(70B)",
+        "count": 1
+      },
+      {
+        "response": "0x026D(324B)",
+        "count": 1
+      },
+      {
+        "response": "0x026D(111B)",
+        "count": 1
+      }
+    ],
+    "samples": [
+      {
+        "source": "test_results.json",
+        "opcode": "0x0CEB",
+        "name": "TRAIN troops (confirmed working)",
+        "status": "GOT_RESPONSE",
+        "responses": [
+          "0x0076(166B)",
+          "0x0077(222B)",
+          "0x0078(490B)",
+          "0x0095(74B)",
+          "0x007A(0B)",
+          "0x0773(70B)",
+          "0x026D(324B)",
+          "0x026D(111B)"
+        ],
+        "payload_size": 10,
+        "error_code": null
+      }
+    ]
+  },
+  {
+    "opcode": "0x0CED",
+    "current_meaning": "TRAIN in current protocol.py",
+    "legacy_drift": true,
+    "evidence_level": "mixed_signals",
+    "sources": [
+      "test_results.json",
+      "round2_results.json"
+    ],
+    "status_counts": {
+      "GOT_RESPONSE": 1,
+      "NO_RESPONSE": 1,
+      "SILENT": 1,
+      "RESPONSE": 1
+    },
+    "top_responses": [
+      {
+        "response": "0x026D(151B)",
+        "count": 1
+      },
+      {
+        "response": "0x026D(126B)",
+        "count": 1
+      },
+      {
+        "response": "0x0042(8B)",
+        "count": 1
+      },
+      {
+        "response": "0x026D(117B)",
+        "count": 1
+      }
+    ],
+    "samples": [
+      {
+        "source": "test_results.json",
+        "opcode": "0x0CED",
+        "name": "BUILD upgrade Embassy (type=3, slot=3)",
+        "status": "GOT_RESPONSE",
+        "responses": [
+          "0x026D(151B)",
+          "0x026D(126B)"
+        ],
+        "payload_size": 19,
+        "error_code": null
+      },
+      {
+        "source": "test_results.json",
+        "opcode": "0x0CED",
+        "name": "BUILD upgrade Watchtower (type=7, slot=7)",
+        "status": "NO_RESPONSE",
+        "responses": [],
+        "payload_size": 19,
+        "error_code": null
+      },
+      {
+        "source": "round2_results.json",
+        "opcode": "0x0CED",
+        "name": "TRAIN (Capstone: SOLDIER_PRODUCE) - 10B",
+        "status": "SILENT",
+        "responses": [],
+        "payload_size": null,
+        "error_code": null
+      },
+      {
+        "source": "round2_results.json",
+        "opcode": "0x0CED",
+        "name": "TRAIN (19B alt payload)",
+        "status": "RESPONSE",
+        "responses": [
+          "0x0042(8B)",
+          "0x026D(117B)"
+        ],
+        "payload_size": null,
+        "error_code": null
+      }
+    ]
+  },
+  {
+    "opcode": "0x0CEE",
+    "current_meaning": "RESEARCH in current protocol.py",
+    "legacy_drift": false,
+    "evidence_level": "mixed_signals",
+    "sources": [
+      "test_results.json",
+      "round2_results.json"
+    ],
+    "status_counts": {
+      "GOT_RESPONSE": 1,
+      "NO_RESPONSE": 1,
+      "RESPONSE": 1
+    },
+    "top_responses": [
+      {
+        "response": "0x0042(8B)",
+        "count": 1
+      },
+      {
+        "response": "0x026D(124B)",
+        "count": 1
+      },
+      {
+        "response": "0x026D(171B)",
+        "count": 1
+      },
+      {
+        "response": "0x036C(4B)",
+        "count": 1
+      }
+    ],
+    "samples": [
+      {
+        "source": "test_results.json",
+        "opcode": "0x0CEE",
+        "name": "RESEARCH (19B, same structure as BUILD)",
+        "status": "GOT_RESPONSE",
+        "responses": [
+          "0x0042(8B)"
+        ],
+        "payload_size": 19,
+        "error_code": null
+      },
+      {
+        "source": "test_results.json",
+        "opcode": "0x0CEE",
+        "name": "RESEARCH (10B, train-like structure)",
+        "status": "NO_RESPONSE",
+        "responses": [],
+        "payload_size": 10,
+        "error_code": null
+      },
+      {
+        "source": "round2_results.json",
+        "opcode": "0x0CEE",
+        "name": "RESEARCH (10B train-like)",
+        "status": "RESPONSE",
+        "responses": [
+          "0x026D(124B)",
+          "0x026D(171B)",
+          "0x036C(4B)"
+        ],
+        "payload_size": null,
+        "error_code": null
+      }
+    ]
+  },
+  {
+    "opcode": "0x0CEF",
+    "current_meaning": "BUILD in current protocol.py",
+    "legacy_drift": false,
+    "evidence_level": "mixed_signals",
+    "sources": [
+      "test_results.json",
+      "round2_results.json"
+    ],
+    "status_counts": {
+      "GOT_RESPONSE": 1,
+      "SILENT": 1,
+      "RESPONSE": 2
+    },
+    "top_responses": [
+      {
+        "response": "0x026D(174B)",
+        "count": 1
+      },
+      {
+        "response": "0x026D(337B)",
+        "count": 1
+      },
+      {
+        "response": "0x0042(8B)",
+        "count": 1
+      },
+      {
+        "response": "0x026D(169B)",
+        "count": 1
+      }
+    ],
+    "samples": [
+      {
+        "source": "test_results.json",
+        "opcode": "0x0CEF",
+        "name": "UNKNOWN 0x0CEF (22B from PCAP)",
+        "status": "GOT_RESPONSE",
+        "responses": [
+          "0x026D(174B)",
+          "0x026D(337B)"
+        ],
+        "payload_size": 22,
+        "error_code": null
+      },
+      {
+        "source": "round2_results.json",
+        "opcode": "0x0CEF",
+        "name": "BUILD Embassy (Capstone: BUILDING_OPERAT) - 19B",
+        "status": "SILENT",
+        "responses": [],
+        "payload_size": null,
+        "error_code": null
+      },
+      {
+        "source": "round2_results.json",
+        "opcode": "0x0CEF",
+        "name": "BUILD Embassy (22B PCAP format)",
+        "status": "RESPONSE",
+        "responses": [
+          "0x0042(8B)"
+        ],
+        "payload_size": null,
+        "error_code": null
+      },
+      {
+        "source": "round2_results.json",
+        "opcode": "0x0CEF",
+        "name": "BUILD Watchtower (22B, slot 7)",
+        "status": "RESPONSE",
+        "responses": [
+          "0x026D(169B)"
+        ],
+        "payload_size": null,
+        "error_code": null
+      }
+    ]
+  },
+  {
+    "opcode": "0x0CF9",
+    "current_meaning": "BUILD_FIX in current protocol.py",
+    "legacy_drift": false,
+    "evidence_level": "silent_or_unverified",
+    "sources": [
+      "test_results.json",
+      "round2_results.json"
+    ],
+    "status_counts": {
+      "NO_RESPONSE": 1,
+      "SILENT": 1
+    },
+    "top_responses": [],
+    "samples": [
+      {
+        "source": "test_results.json",
+        "opcode": "0x0CF9",
+        "name": "BUILD_FIX 0x0CF9 (same payload as BUILD)",
+        "status": "NO_RESPONSE",
+        "responses": [],
+        "payload_size": 19,
+        "error_code": null
+      },
+      {
+        "source": "round2_results.json",
+        "opcode": "0x0CF9",
+        "name": "BUILD_FIX 0x0CF9 (22B)",
+        "status": "SILENT",
+        "responses": [],
+        "payload_size": null,
+        "error_code": null
+      }
+    ]
+  }
+]

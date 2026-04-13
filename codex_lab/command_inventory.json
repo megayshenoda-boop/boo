@@ -1,0 +1,382 @@
+[
+  {
+    "method": "train",
+    "line": 48,
+    "mode": "encrypted",
+    "opcode_constant": "OP_TRAIN",
+    "opcode_value": "0x0CED",
+    "status": "confirmed_in_game",
+    "summary": "Train troops (0x0CED = CMSG_SOLDIER_NORMAL_PRODUCE_REQUEST_NEW)",
+    "note": "Strongest practical confirmation in repo artifacts."
+  },
+  {
+    "method": "build",
+    "line": 71,
+    "mode": "encrypted",
+    "opcode_constant": "OP_BUILD",
+    "opcode_value": "0x0CEF",
+    "status": "server_response_seen",
+    "summary": "Build/Upgrade/Demolish (0x0CEF = CMSG_BUILDING_OPERAT_REQUEST_NEW)",
+    "note": "Response observed, but not fully semantically verified."
+  },
+  {
+    "method": "demolish",
+    "line": 101,
+    "mode": "composite",
+    "opcode_constant": null,
+    "opcode_value": null,
+    "status": "implemented_not_verified",
+    "summary": "Shortcut: Demolish a building.",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "upgrade",
+    "line": 105,
+    "mode": "composite",
+    "opcode_constant": null,
+    "opcode_value": null,
+    "status": "implemented_not_verified",
+    "summary": "Shortcut: Upgrade a building.",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "research",
+    "line": 109,
+    "mode": "encrypted",
+    "opcode_constant": "OP_RESEARCH",
+    "opcode_value": "0x0CEE",
+    "status": "server_response_seen",
+    "summary": "Start research (0x0CEE = CMSG_SCIENCE_NORMAL_STUDY_REQUEST_NEW)",
+    "note": "Response observed, but success semantics still need proof."
+  },
+  {
+    "method": "start_march",
+    "line": 122,
+    "mode": "encrypted",
+    "opcode_constant": "OP_START_MARCH",
+    "opcode_value": "0x0CE8",
+    "status": "needs_verification",
+    "summary": "Start a march (0x0CE8 = CMSG_START_MARCH_NEW)",
+    "note": "High-value command family, verification gap remains."
+  },
+  {
+    "method": "cancel_march",
+    "line": 153,
+    "mode": "encrypted",
+    "opcode_constant": "OP_CANCEL_MARCH",
+    "opcode_value": "0x0CE9",
+    "status": "needs_verification",
+    "summary": "Cancel a march",
+    "note": "Implemented helper, needs response mapping."
+  },
+  {
+    "method": "raid_player",
+    "line": 158,
+    "mode": "encrypted",
+    "opcode_constant": "OP_RAID_PLAYER",
+    "opcode_value": "0x0CF3",
+    "status": "needs_verification",
+    "summary": "Attack/raid a player",
+    "note": "Implemented, not strongly validated yet."
+  },
+  {
+    "method": "move_castle",
+    "line": 175,
+    "mode": "encrypted",
+    "opcode_constant": "OP_MOVE_CASTLE",
+    "opcode_value": "0x0CF1",
+    "status": "needs_verification",
+    "summary": "Teleport castle",
+    "note": "Implemented, not strongly validated yet."
+  },
+  {
+    "method": "start_buildup",
+    "line": 184,
+    "mode": "encrypted",
+    "opcode_constant": "OP_START_BUILDUP",
+    "opcode_value": "0x0CE4",
+    "status": "implemented_not_verified",
+    "summary": "Start alliance rally",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "join_buildup",
+    "line": 203,
+    "mode": "encrypted",
+    "opcode_constant": "OP_JOIN_BUILDUP",
+    "opcode_value": "0x0CE5",
+    "status": "implemented_not_verified",
+    "summary": "Join alliance rally",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "start_defend",
+    "line": 219,
+    "mode": "encrypted",
+    "opcode_constant": "OP_START_DEFEND",
+    "opcode_value": "0x0CE6",
+    "status": "implemented_not_verified",
+    "summary": "Garrison/defend a player",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "back_defend",
+    "line": 235,
+    "mode": "encrypted",
+    "opcode_constant": "OP_BACK_DEFEND",
+    "opcode_value": "0x0CE7",
+    "status": "implemented_not_verified",
+    "summary": "Return from garrison",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "march_use_item",
+    "line": 239,
+    "mode": "encrypted",
+    "opcode_constant": "OP_MARCH_USE_ITEM",
+    "opcode_value": "0x0CEA",
+    "status": "implemented_not_verified",
+    "summary": "Use item on march",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "league_donate",
+    "line": 244,
+    "mode": "encrypted",
+    "opcode_constant": "OP_LEAGUE_DONATE",
+    "opcode_value": "0x01ED",
+    "status": "implemented_not_verified",
+    "summary": "Alliance donation",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "mail_request",
+    "line": 249,
+    "mode": "encrypted",
+    "opcode_constant": "OP_MAIL_REQUEST",
+    "opcode_value": "0x0CF6",
+    "status": "implemented_not_verified",
+    "summary": "Read mail",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "shop_buy",
+    "line": 254,
+    "mode": "encrypted",
+    "opcode_constant": "OP_SHOP_BUY",
+    "opcode_value": "0x0CF8",
+    "status": "implemented_not_verified",
+    "summary": "Buy from item shop",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "enable_view",
+    "line": 259,
+    "mode": "encrypted",
+    "opcode_constant": "OP_ENABLE_VIEW",
+    "opcode_value": "0x0CEB",
+    "status": "opcode_verified",
+    "summary": "Scout/view map area (0x0CEB = CMSG_ENABLE_VIEW_NEW)",
+    "note": "Mapped in protocol, but not a high-confidence gameplay proof."
+  },
+  {
+    "method": "use_item",
+    "line": 280,
+    "mode": "plain",
+    "opcode_constant": "OP_ITEM_USE",
+    "opcode_value": "0x0065",
+    "status": "needs_verification",
+    "summary": "Use item - shields, speedups, resources (0x0065)",
+    "note": "Implemented, but current tests are weak."
+  },
+  {
+    "method": "heal_troops",
+    "line": 288,
+    "mode": "plain",
+    "opcode_constant": "OP_HEAL",
+    "opcode_value": "0x06CB",
+    "status": "needs_verification",
+    "summary": "Heal troops (0x06CB = CMSG_SOLDIER_NORMAL_CURE_REQUEST)",
+    "note": "Implemented, not strongly verified in repo artifacts."
+  },
+  {
+    "method": "speed_train",
+    "line": 296,
+    "mode": "plain",
+    "opcode_constant": "OP_TRAIN_ITEM_SPD",
+    "opcode_value": "0x06C7",
+    "status": "implemented_not_verified",
+    "summary": "Speed up training with item (0x06C7)",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "speed_heal",
+    "line": 304,
+    "mode": "plain",
+    "opcode_constant": "OP_HEAL_ITEM_SPD",
+    "opcode_value": "0x06CF",
+    "status": "implemented_not_verified",
+    "summary": "Speed up healing with item",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "onekey_speed_train",
+    "line": 309,
+    "mode": "plain",
+    "opcode_constant": "OP_TRAIN_ONEKEY",
+    "opcode_value": "0x06D4",
+    "status": "implemented_not_verified",
+    "summary": "One-key speed up all training",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "onekey_speed_heal",
+    "line": 314,
+    "mode": "plain",
+    "opcode_constant": "OP_HEAL_ONEKEY",
+    "opcode_value": "0x06D6",
+    "status": "implemented_not_verified",
+    "summary": "One-key speed up all healing",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "build_help",
+    "line": 319,
+    "mode": "plain",
+    "opcode_constant": "OP_BUILD_HELP",
+    "opcode_value": "0x009F",
+    "status": "implemented_not_verified",
+    "summary": "Request alliance build help (0x009F)",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "research_help",
+    "line": 327,
+    "mode": "plain",
+    "opcode_constant": "OP_RESEARCH_HELP",
+    "opcode_value": "0x00C6",
+    "status": "implemented_not_verified",
+    "summary": "Request alliance research help (0x00C6)",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "speed_research",
+    "line": 335,
+    "mode": "plain",
+    "opcode_constant": "OP_RESEARCH_ITEM_SPD",
+    "opcode_value": "0x00C4",
+    "status": "implemented_not_verified",
+    "summary": "Speed up research with item",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "cancel_research",
+    "line": 340,
+    "mode": "plain",
+    "opcode_constant": "OP_RESEARCH_CANCEL",
+    "opcode_value": "0x00C1",
+    "status": "implemented_not_verified",
+    "summary": "Cancel active research",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "build_trap",
+    "line": 345,
+    "mode": "plain",
+    "opcode_constant": "OP_TRAP_BUILD",
+    "opcode_value": "0x014B",
+    "status": "implemented_not_verified",
+    "summary": "Build traps",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "destroy_trap",
+    "line": 350,
+    "mode": "plain",
+    "opcode_constant": "OP_TRAP_DESTROY",
+    "opcode_value": "0x0154",
+    "status": "implemented_not_verified",
+    "summary": "Destroy traps",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "exchange_building",
+    "line": 355,
+    "mode": "plain",
+    "opcode_constant": "OP_EXCHANGE_BUILD",
+    "opcode_value": "0x00A1",
+    "status": "implemented_not_verified",
+    "summary": "Exchange building type",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "train_complete",
+    "line": 360,
+    "mode": "plain",
+    "opcode_constant": "OP_TRAIN_COMPLETE",
+    "opcode_value": "0x06C9",
+    "status": "implemented_not_verified",
+    "summary": "Collect completed training",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "heal_complete",
+    "line": 365,
+    "mode": "plain",
+    "opcode_constant": "OP_HEAL_COMPLETE",
+    "opcode_value": "0x06D1",
+    "status": "implemented_not_verified",
+    "summary": "Collect completed healing",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "heartbeat",
+    "line": 374,
+    "mode": "plain",
+    "opcode_constant": "OP_HEARTBEAT",
+    "opcode_value": "0x0042",
+    "status": "implemented_not_verified",
+    "summary": "Build heartbeat packet.",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "call_to_arms_demolish",
+    "line": 383,
+    "mode": "composite",
+    "opcode_constant": null,
+    "opcode_value": null,
+    "status": "implemented_not_verified",
+    "summary": "Generate packets to demolish farms for Call to Arms event",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "call_to_arms_rebuild",
+    "line": 396,
+    "mode": "composite",
+    "opcode_constant": null,
+    "opcode_value": null,
+    "status": "implemented_not_verified",
+    "summary": "Generate packets to build military buildings after demolish",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "mass_train",
+    "line": 409,
+    "mode": "composite",
+    "opcode_constant": null,
+    "opcode_value": null,
+    "status": "implemented_not_verified",
+    "summary": "Train troops in multiple batches",
+    "note": "Present in code, but not strongly proven by artifacts."
+  },
+  {
+    "method": "gather_resources",
+    "line": 421,
+    "mode": "composite",
+    "opcode_constant": null,
+    "opcode_value": null,
+    "status": "implemented_not_verified",
+    "summary": "Send marches to gather resource tiles",
+    "note": "Present in code, but not strongly proven by artifacts."
+  }
+]

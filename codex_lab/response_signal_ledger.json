@@ -1,0 +1,191 @@
+[
+  {
+    "response_opcode": "0x0042",
+    "seen_as": [
+      "0x0042(8B)"
+    ],
+    "seen_from_action_opcodes": [
+      "0x0065",
+      "0x00BF",
+      "0x0CED",
+      "0x0CEE",
+      "0x0CEF"
+    ],
+    "seen_from_current_meanings": [
+      "ITEM_USE",
+      "OLD_RESEARCH",
+      "TRAIN in current protocol.py",
+      "RESEARCH in current protocol.py",
+      "BUILD in current protocol.py"
+    ],
+    "count": 5,
+    "names": [
+      "HEARTBEAT"
+    ],
+    "signal": "passive",
+    "note": "Heartbeat only. Not useful as proof that the tested action succeeded."
+  },
+  {
+    "response_opcode": "0x0076",
+    "seen_as": [
+      "0x0076(166B)"
+    ],
+    "seen_from_action_opcodes": [
+      "0x0CEB"
+    ],
+    "seen_from_current_meanings": [
+      "ENABLE_VIEW in current protocol.py"
+    ],
+    "count": 1,
+    "names": [
+      "MAP_TILE"
+    ],
+    "signal": "map_view",
+    "note": "Map tile data. Strongly consistent with view/map reveal behavior."
+  },
+  {
+    "response_opcode": "0x0077",
+    "seen_as": [
+      "0x0077(222B)"
+    ],
+    "seen_from_action_opcodes": [
+      "0x0CEB"
+    ],
+    "seen_from_current_meanings": [
+      "ENABLE_VIEW in current protocol.py"
+    ],
+    "count": 1,
+    "names": [
+      "MAP_ARMY"
+    ],
+    "signal": "map_view",
+    "note": "Map army data. Supports the interpretation that the opcode triggered world view sync."
+  },
+  {
+    "response_opcode": "0x0078",
+    "seen_as": [
+      "0x0078(490B)"
+    ],
+    "seen_from_action_opcodes": [
+      "0x0CEB"
+    ],
+    "seen_from_current_meanings": [
+      "ENABLE_VIEW in current protocol.py"
+    ],
+    "count": 1,
+    "names": [
+      "MAP_DATA"
+    ],
+    "signal": "map_view",
+    "note": "Map data packet. Strong map-related signal, not a training confirmation."
+  },
+  {
+    "response_opcode": "0x007A",
+    "seen_as": [
+      "0x007A(0B)"
+    ],
+    "seen_from_action_opcodes": [
+      "0x0CEB"
+    ],
+    "seen_from_current_meanings": [
+      "ENABLE_VIEW in current protocol.py"
+    ],
+    "count": 1,
+    "names": [
+      "VIEW_DONE"
+    ],
+    "signal": "map_view",
+    "note": "View done marker in test artifacts."
+  },
+  {
+    "response_opcode": "0x0095",
+    "seen_as": [
+      "0x0095(74B)"
+    ],
+    "seen_from_action_opcodes": [
+      "0x0CEB"
+    ],
+    "seen_from_current_meanings": [
+      "ENABLE_VIEW in current protocol.py"
+    ],
+    "count": 1,
+    "names": [
+      "MAP_BUILD"
+    ],
+    "signal": "map_view",
+    "note": "Map building data. Supports the view/map interpretation."
+  },
+  {
+    "response_opcode": "0x026D",
+    "seen_as": [
+      "0x026D(116B)",
+      "0x026D(130B)",
+      "0x026D(324B)",
+      "0x026D(111B)",
+      "0x026D(151B)",
+      "0x026D(126B)",
+      "0x026D(117B)",
+      "0x026D(124B)",
+      "0x026D(171B)",
+      "0x026D(174B)",
+      "0x026D(337B)",
+      "0x026D(169B)"
+    ],
+    "seen_from_action_opcodes": [
+      "0x009D",
+      "0x0CEB",
+      "0x0CED",
+      "0x0CEE",
+      "0x0CEF"
+    ],
+    "seen_from_current_meanings": [
+      "OLD_BUILD",
+      "ENABLE_VIEW in current protocol.py",
+      "TRAIN in current protocol.py",
+      "RESEARCH in current protocol.py",
+      "BUILD in current protocol.py"
+    ],
+    "count": 13,
+    "names": [
+      "CHAT_MSG"
+    ],
+    "signal": "unknown_but_repeated",
+    "note": "Repeated response across multiple tests. Important to parse, but meaning is still unclear."
+  },
+  {
+    "response_opcode": "0x036C",
+    "seen_as": [
+      "0x036C(4B)"
+    ],
+    "seen_from_action_opcodes": [
+      "0x009D",
+      "0x0CEE"
+    ],
+    "seen_from_current_meanings": [
+      "OLD_BUILD",
+      "RESEARCH in current protocol.py"
+    ],
+    "count": 2,
+    "names": [
+      "SERVER_TICK"
+    ],
+    "signal": "passive",
+    "note": "Server tick or background timing signal. Weak evidence by itself."
+  },
+  {
+    "response_opcode": "0x0773",
+    "seen_as": [
+      "0x0773(70B)"
+    ],
+    "seen_from_action_opcodes": [
+      "0x0CEB"
+    ],
+    "seen_from_current_meanings": [
+      "ENABLE_VIEW in current protocol.py"
+    ],
+    "count": 1,
+    "names": [],
+    "signal": "unknown",
+    "note": "No manual interpretation added yet."
+  }
+]
