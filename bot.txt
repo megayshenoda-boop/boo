@@ -1,0 +1,382 @@
+📋 ملف الاكتشافات الشامل - IGG Lords Mobile Bot
+# تاريخ: 2026-03-16 (updated)
+# الحالة: HTTP ✅ 100% | TCP Gateway ✅ CRACKED | Game Server ✅ CONNECTED | Bot ✅ WORKING
+---
+## 📌 الملخص التنفيذي
+تم بنجاح عمل **reverse engineering كامل** لبروتوكول HTTP + TCP الخاص بلعبة Conquerors (IGG). تم كسر الـ 32-byte token: `XOR(access_key, "CQ_secret")`. البوت اتصل بالـ Gateway وحصل على redirect، واتصل بالـ Game Server وحصل على **95KB** من بيانات اللعبة. الـ bot شغال 100%.
+---
+## 🎯 اختراق 2026-03-16: PCAP Capture كامل
+### Connection Flow المكتشف (3 مراحل)
+```
+Phase 1: HTTP Login (5 steps) → access_token
+Phase 2: Gateway Auth → TCP 54.93.167.80:5997
+   Client sends 0x000B (79B): IGG ID + 32B auth token + world ID
+   Server responds 0x000C (68B): REDIRECT IP:port + 32-char session token
+Phase 3: Game Server → TCP {redirect_ip}:{redirect_port} (e.g. 54.93.192.240:7000)
+   Client sends 0x001F (64B): IGG ID + session token (from 0x000C)
+   Server responds 0x0020 (5B): status=1 (OK)
+   Client sends 0x0021 (21B): world entry
+   Server floods game data (guilds, map, buildings, etc.)
+```
+### 0x000B Packet (Client → Gateway) - 79 bytes CAPTURED
+```
+4f000b000100000000000000c9aa1e7c0000000020007a376b45525610541672356e115c0516551570353d4654574755457b65694a00000000000200000000000000d30000000eff003f0000000001
+```
+### 0x000C Packet (Gateway → Client) - 68 bytes CAPTURED
+```
+44000c00c9aa1e7c000000000d0035342e39332e3139322e323430581b200062353263306634316365376132646563336230643561373765323961623166323031d3000000
+```
+**Decoded 0x000C:**
+- Redirect IP: `54.93.192.240` (ASCII string, length-prefixed)
+- Redirect Port: `7000` (LE uint16)
+- Session Token: `b52c0f41ce7a2dec3b0d5a77e29ab1f2` (32 ASCII chars)
+- World ID: `211`
+
+### 0x001F Packet (Client → Game Server) - 64 bytes CAPTURED
+```
+40001f000100000000000000c9aa1e7c00000000200062353263306634316365376132646563336230643561373765323961623166320e0eff003f0000000000
+```
+**Note:** The session token from 0x000C is passed directly as ASCII in 0x001F
+
+### 0x0020 Response (Game Server → Client) - 5 bytes
+```
+0500200001   ← status byte = 01 (OK)
+```
+### 0x0021 World Entry (Client → Game Server) - 21 bytes
+```
+15002100c9aa1e7c000000000e0eff003fb0025c00
+```
+### Client Opcodes Captured (to game server):
+| Opcode | Size | Count | Purpose |
+|--------|------|-------|---------|
+| 0x001F | 64B  | 1x    | Game server login |
+| 0x0021 | 21B  | 1x    | World entry |
+| 0x0042 | 12B  | 5x    | Heartbeat/ping |
+| 0x0043 | 20B  | 2x    | Map tile request? |
+| 0x099D | 8B   | 7x    | Status query |
+| 0x0CEB | 18B  | 1x    | Unknown |
+| 0x1C87 | 150B | 1x    | Chat/encrypted |
+| 0x17D4 | 4B   | 1x    | Simple command |
+| 0x0709 | 4B   | 1x    | Simple command |
+| 0x0840 | 4B   | 1x    | Simple command |
+
+### TOKEN CRACKED!
+The 32-byte binary token in 0x000B is derived by XOR:
+```
+token = XOR(access_key_ascii, "CQ_secret" repeating to 32 chars)
+XOR key = "CQ_secretCQ_secretCQ_secretCQ_se"
+```
+- `access_key` = `weg_Accesskey` from `shared_prefs/weg_login_file.xml`
+- Current value: `9f4675b1b1d1b9fd0a3db5145018469e`
+- "CQ" = "Conquerors" (game name abbreviation)
+- Verified **32/32 bytes perfect match** across 2 separate captures
+
+### Files:
+- `d:\CascadeProjects\protocol_findings.txt` - Full protocol analysis
+- `d:\CascadeProjects\capture.pcap` - Raw PCAP capture
+- `d:\CascadeProjects\all_post_auth.txt` - All 77 game server packets
+- `d:\CascadeProjects\decode_protocol.py` - PCAP parser script
+
+---
+## ✅ اللي نجحنا فيه (100%)
+### 1. HTTP Login Flow - 5 خطوات كاملة
+| الخطوة | الوصف | النتيجة | الحالة |
+|--------|-------|---------|--------|
+| Step 1 | الحصول على PHPSESSID من `account.igg.com/embed/entry` | Session cookie | ✅ |
+| Step 2 | تسجيل الدخول بالإيميل `embed/login/email` (MD5 password) | SSO Token | ✅ |
+| Step 3 | اختيار IGG ID `embed/login/user_id` | Platform JWT | ✅ |
+| Step 4 | الحصول على Access Token من `apis-dsa.iggapis.com` (HMAC signed) | Access Token + Token Key | ✅ |
+| Step 5 | استدعاء Game API (مثل `/ums/member/binding`) | بيانات الحساب | ✅ |
+### 2. المفاتيح والثوابت المستخرجة
+| المفتاح | القيمة | المصدر |
+|---------|--------|--------|
+| HMAC Secret Key | `07Z8D2AoYFGGivw40fEOj9swnpyF7Pw3ilKpVKnJ` | Frida hook على `libcrypto.so` |
+| AES Key | `hsgUX5dJC33sxaDf` | تحليل PCAP |
+| AES IV | `9715232762351892` | تحليل PCAP |
+| GAME_ID | `1057029902` | Headers |
+| GPC_VER | `2.5` | Headers |
+| GPC_EVO | `1;gpc=s2` | Headers |
+| GPC_FAMILY | `bmbkf3` | Headers |
+### 3. خوارزمية التوقيع (HMAC-SHA256)
+**تم فك الترتيب الصحيح للـ Canonical String:**
+```
+x-gpc-uiid: {uiid}
+x-gpc-nonce: {nonce}
+x-gpc-evo: 1;gpc=s2
+x-gpc-game-id: 1057029902
+x-gpc-udid: {udid}
+digest: SHA-256={base64_sha256_body}    ← فقط في POST
+date: {utc_date}
+POST /path HTTP/1.1
+```
+**Authorization Header:**
+```
+hmac username="1057029902", algorithm="hmac-sha256",
+headers="x-gpc-uiid x-gpc-nonce x-gpc-evo x-gpc-game-id x-gpc-udid digest date request-line",
+signature="{base64_hmac_sha256}"
+```
+### 4. x-gpc-sign Generation
+```
+MD5(sorted_params_joined_by_& + MD5(GAME_ID)).toUpperCase()
+```
+### 5. بيانات الحساب المؤكدة
+| البيان | القيمة |
+|--------|--------|
+| Email | minaadelzx12@gmail.com |
+| IGG ID | 2082384585 |
+| آخر Access Token (fresh) | `54de61f0e5c2bbc32de38bbac2476a96` |
+| Token Key | `24-ac98f79016c3e851bdf22ebbf19bdeaa` |
+---
+## ❌ اللي فشلنا فيه (TCP Gateway)
+### المشكلة الأساسية
+الـ TCP Gateway على `54.93.167.80:5993` بيتطلب **32-byte token blob** في packet `0x000B`. كل محاولات توليد الـ token رجعت `channel: 3` (رفض).
+### بنية الـ Packet (0x000B) - 79 bytes
+```
+Offset  Size  Field
+0       2     Total length (79, little-endian)
+2       2     Opcode (0x000B, little-endian)
+4       4     Version? (1)
+8       4     Padding (0)
+12      4     IGG ID (little-endian)
+16      4     Padding (0)
+20      2     Token length (32)
+22      32    TOKEN BLOB ← المجهول
+54      4     Padding (0)
+58      4     Platform? (2)
+62      4     Padding (0)
+66      4     World ID (211, little-endian)
+70      9     Tail bytes (0e ff 00 3f 00 00 00 00 01)
+```
+### كل طرق التوليد المجربة (50+ محاولة)
+#### مبنية على access_token:
+| الطريقة | النتيجة |
+|---------|---------|
+| SHA256(access_token) | ch=3 ❌ |
+| HMAC-SHA256(hmac_key, access_token) | ch=3 ❌ |
+| access_token as 32 ASCII bytes | ch=3 ❌ |
+| access_token raw hex (16 bytes) doubled to 32 | ch=3 ❌ |
+| access_token raw hex padded with zeros to 32 | ch=3 ❌ |
+| AES-CBC(access_token_raw, aes_key, aes_iv) | ch=3 ❌ |
+| AES-ECB(access_token_raw, aes_key) | ch=3 ❌ |
+| AES-CBC(access_token_ascii, aes_key, aes_iv) | ch=3 ❌ |
+| AES-ECB(access_token_ascii, aes_key) | ch=3 ❌ |
+| MD5(access_token) × 2 = 32 bytes | ch=3 ❌ |
+| MD5(access_token) + MD5(igg_id) | ch=3 ❌ |
+| SHA256(MD5(access_token)) | ch=3 ❌ |
+| XOR(access_token_ascii, aes_key) | ch=3 ❌ |
+| XOR(access_token_ascii, hmac_key) | ch=3 ❌ |
+| XOR(access_token_raw, aes_key) | ch=3 ❌ |
+#### مبنية على token_key:
+| الطريقة | النتيجة |
+|---------|---------|
+| SHA256(token_key_hex_part) | ch=3 ❌ |
+| SHA256(full_token_key) | ch=3 ❌ |
+| HMAC(hmac_key, key_hex) | ch=3 ❌ |
+| HMAC(hmac_key, full_key) | ch=3 ❌ |
+| AES-CBC(key_raw) | ch=3 ❌ |
+| key_hex as 32 ASCII bytes | ch=3 ❌ |
+| full_key_ascii truncated to 32 | ch=3 ❌ |
+| key_hex raw doubled to 32 | ch=3 ❌ |
+#### مبنية على combinations:
+| الطريقة | النتيجة |
+|---------|---------|
+| SHA256(access_token + key_hex) | ch=3 ❌ |
+| SHA256(key_hex + access_token) | ch=3 ❌ |
+| SHA256(igg_id + access_token) | ch=3 ❌ |
+| SHA256(access_token + igg_id) | ch=3 ❌ |
+| SHA256(access_token + game_id) | ch=3 ❌ |
+| HMAC(key_bytes, access_token) | ch=3 ❌ |
+| HMAC(access_token_bytes, key) | ch=3 ❌ |
+| HMAC(aes_key, token_key) | ch=3 ❌ |
+| HMAC(aes_iv, access_token) | ch=3 ❌ |
+| XOR(key_raw, at_raw) | ch=3 ❌ |
+| AES-CBC(at_raw, key=token_key) | ch=3 ❌ |
+| SHA256(sso_payload) | ch=3 ❌ |
+| SHA256(sso_full) | ch=3 ❌ |
+| HMAC(at_as_key, igg_id) | ch=3 ❌ |
+| HMAC(hmac_key, at+game_id) | ch=3 ❌ |
+| HMAC(hmac_key, game_id+at) | ch=3 ❌ |
+| HMAC(hmac_key, igg_id+at) | ch=3 ❌ |
+| HMAC(hmac_key, at+igg_id) | ch=3 ❌ |
+| SHA256(at_raw_bytes + key_raw_bytes) | ch=3 ❌ |
+| SHA256(key_raw_bytes + at_raw_bytes) | ch=3 ❌ |
+#### World IDs مختلفة:
+| World ID | النتيجة |
+|----------|---------|
+| 0, 1, 2, 100, 211, 212, 213, 300, 999 | كلهم ch=3 ❌ |
+---
+## 🔍 اكتشاف مهم: /storage/game/c/get_token
+### الـ Endpoint
+```
+POST https://apis.iggapis.com/storage/game/c/get_token
+```
+### النتائج
+| فورمات التوقيع | Host | النتيجة |
+|---------------|------|---------|
+| Sorted headers + request-line first | apis.iggapis.com | **403** "You cannot consume this service" |
+| Sorted headers + request-line last | apis.iggapis.com | **403** |
+| Working order (uiid-nonce-evo...) | apis.iggapis.com | 401 |
+| Sorted + uiid included | apis.iggapis.com | **403** |
+| With x-gpc-token header | apis.iggapis.com | **403** |
+| Working order | apis-dsa.iggapis.com | **403** |
+| All formats | username=access_token | 401 |
+### التفسير
+- **403 ≠ 401**: الـ HMAC signature **صحيحة** (مش مرفوضة)
+- **"You cannot consume this service"**: رسالة من Kong API Gateway تعني إن الـ consumer (game_id) **مش مسموح له** يوصل لهذا الـ endpoint
+- ده ACL (Access Control List) restriction على مستوى الـ API Gateway
+- **حتى مع fresh access_token** = نفس النتيجة (مش مشكلة expiration)
+### الخلاصة
+الـ 32-byte token **مش بيتولد من access_token أو token_key بأي طريقة رياضية**. على الأرجح بيجي من:
+1. **Endpoint محمي** (`/storage/game/c/get_token`) اللي محتاج ACL permission خاصة
+2. أو **من داخل التطبيق مباشرة** (native code في `libnb.so` أو مشابه)
+---
+## 🏗️ البنية التحتية المبنية
+### Edge Functions
+| الملف | الوظيفة |
+|-------|---------|
+| `run-bot/index.ts` | البوت الأساسي - الـ 5 خطوات HTTP كاملة |
+| `game-connect/index.ts` | Login + Token generation + Gateway test (21 candidate) |
+| `crack-storage-token/index.ts` | محاولة كسر توقيع `/storage/game/c/get_token` (25 format) |
+| `crack-storage-v2/index.ts` | محاولة محسنة مع sorted headers و hosts مختلفة |
+| `fresh-storage-crack/index.ts` | Login كامل + storage endpoint test مع fresh token |
+| `test-key-token/index.ts` | اختبار token_key derivations على Gateway (17 method) |
+| `final-gateway-test/index.ts` | اختبارات نهائية: packet variants + world IDs |
+| `probe-game-token/index.ts` | مسح endpoints بديلة |
+| `gateway-test/index.ts` | اختبار Gateway مباشر |
+| `test-token/index.ts` | اختبار token على Gateway |
+| `analyze-auth/index.ts` | تحليل authentication |
+| `probe-apis/index.ts` | مسح APIs |
+### Frontend Components
+| الملف | الوظيفة |
+|-------|---------|
+| `src/pages/Index.tsx` | الصفحة الرئيسية |
+| `src/components/BotRunner.tsx` | واجهة تشغيل البوت |
+| `src/components/StepProgress.tsx` | عرض تقدم الخطوات |
+| `src/components/LogViewer.tsx` | عرض اللوجات |
+### Python Scripts (مرجعية)
+| الملف | الوظيفة |
+|-------|---------|
+| `ZERO_GAME_BOT_FINAL.py` | البوت الأصلي |
+| `AUTO_BOT_FINAL.py` | البوت الأوتوماتيكي |
+| `sign_generator.py` | توليد x-gpc-sign |
+| `hmac_config.py` | ثوابت HMAC |
+| `full_login_orchestrator_v3.py` | محاولة login + storage (Python) |
+---
+## 📊 الإحصائيات
+| المقياس | العدد |
+|---------|-------|
+| إجمالي طرق توليد الـ token المجربة | 50+ |
+| فورمات التوقيع المجربة لـ storage endpoint | 30+ |
+| Gateway IPs المجربة | 2 |
+| World IDs المجربة | 9 |
+| Edge Functions المبنية | 12 |
+| Python scripts مرجعية | 60+ |
+| PCAP files محللة | 15+ |
+| Frida hooks مكتوبة | 20+ |
+---
+## 🛣️ الخطوات الممكنة
+### لو عايز تكمل:
+1. **📱 PCAP جديد** - سجل traffic أثناء دخول اللعبة وابحث عن:
+   - أي HTTP request لـ `/storage/game/c/get_token` (لو التطبيق بيعمله)
+   - الـ 32-byte token blob في الـ TCP packet الأولى للـ Gateway
+   - أي endpoint تاني بيرجع token
+2. **🔧 Frida Hook أعمق** - hook على `libnb.so` أو `libgame.so` في المكان اللي بيبني الـ 0x000B packet ونشوف الـ token قبل ما يتبعت
+3. **🔄 Retry with different accounts** - ممكن الحساب ده فيه مشكلة، جرب حساب تاني
+### لو عايز تستفيد من اللي عندك:
+1. **HTTP Bot كامل** - البوت شغال 100% لـ:
+   - تسجيل الدخول
+   - قراءة بيانات الحساب
+   - أي Game API call عبر HTTP
+   
+2. **Mass Account Checker** - تشيك حسابات كتير مرة واحدة
+3. **Dashboard** - واجهة تعرض كل المعلومات وتشغل البوت
+---
+## ⚠️ ملاحظات مهمة
+1. الـ **access_token بينتهي** بعد ساعة-ساعتين، لازم تعمل login جديد
+2. الـ **UDID و UIID** ممكن يكونوا random UUIDs كل مرة
+3. الـ **password لازم MD5** قبل الإرسال
+4. الـ **Host header مهم**: `apis-dsa.iggapis.com` للـ UMS API
+5. الـ **sorted headers format** بيشتغل على `apis.iggapis.com` (بيرجع 403 مش 401)
+6. فورمات التوقيع **مختلف** بين الـ hosts:
+   - `apis.iggapis.com`: sorted alphabetically + `request-line` first
+   - `apis-dsa.iggapis.com`: fixed order (uiid→nonce→evo→gid→udid)
+---
+## 🔓 اختراق 2026-03-16: CMsgCodec ENCRYPTION CRACKED!
+
+### الخوارزمية الكاملة (مؤكدة 100%):
+```
+enc[i] = ((plain[i] + msg_byte * 17) ^ sk_byte ^ table_byte) & 0xFF
+
+- i = byte offset from start of full packet (encryption starts at i=8)
+- table_byte = TABLE[i % 7]
+- sk_byte = server_key[i % 4]
+- msg_byte = msg_value_bytes[i % 2]
+- Period = LCM(2,4,7) = 28 bytes
+```
+
+### الثوابت:
+```
+TABLE = [0x58, 0xef, 0xd7, 0x14, 0xa2, 0x3b, 0x9c]  # 7 bytes from libgame.so @ 0x028b723a
+```
+
+### Packet Metadata (bytes 4-7 of full packet):
+```
+byte[4] = checksum (low byte of sum of all encrypted bytes)
+byte[5] = msg_value & 0xFF
+byte[6] = (msg_value & 0xFF) ^ 0xB7   ← verification pattern!
+byte[7] = (msg_value >> 8) & 0xFF
+```
+
+### Server Key:
+- Sent in **0x0038** server packet (player/castle data, ~830 bytes)
+- Structure: sequential 12-byte key-value entries: [u32 field_id][u64 value]
+- **Field ID 0x4F (79)** = server_key as u32 LE
+- capture1.pcap key: `[0x9b, 0x1d, 0x8b, 0x22]` = `0x228b1d9b`
+
+### Action Opcodes المفكوكة:
+| Opcode | Size | Purpose | Structure |
+|--------|------|---------|-----------|
+| 0x0CE8 | 62B  | Gather (جمع موارد) | slot + march_type + troop_types[6] + count + IGG_ID |
+| 0x0CEB | 10B  | Train (تدريب) | type + IGG_ID + flag |
+| 0x0CED | 19B  | Build (بناء) | building_type + building_id + IGG_ID |
+| 0x0CEF | 22B  | Unknown action | sub_type + constants + IGG_ID |
+
+### Decoded 0x0CE8 Gather Structure (62 bytes):
+```
+[0]     u8  march_slot (1 or 2)
+[1:4]   3B  variable nonce
+[4:6]   u16 march_type_id (0x1748)
+[6:9]   3B  zeros
+[9:12]  3B  target tile info
+[12:14] 2B  constants (0x02, 0x05)
+[14:38] 6x u32 troop_type_ids (201,212,206,216,224,211)
+[38:42] u32 troop_count
+[42:49] 7B  flags
+[49:53] u32 IGG_ID
+[53:62] 9B  zeros
+```
+
+### Roundtrip Verification:
+- ✅ ALL 6 captured packets decrypt + re-encrypt perfectly
+- ✅ Checksum matches on 5/6 packets (1 had truncated hex)
+- ✅ Server key found in 0x0038 at exactly the expected location
+
+### Reverse Engineering Method:
+1. ARM64 disassembly of `libgame.so` using **capstone**
+2. Functions analyzed: `CMsgCodec::Encode`, `Encryption::doDecode`, `KeyMode::parseMode`
+3. Key tables extracted from binary: 190 bytes at 0x028c69b0
+4. Server key brute-forced from 6 captured packets using known-plaintext scoring
+
+### Key Files:
+| File | Purpose |
+|------|---------|
+| `codec.py` | Complete CMsgCodec encoder/decoder module |
+| `config-decryptor/capture1.pcap` | PCAP with 6 action packets |
+| `libgame.so` | ARM64 binary analyzed with capstone |
+| `disasm_capstone.py` | Capstone disassembly script |
+| `bruteforce_sk.py` | Server key brute-force script |
+| `scan_all_pcaps.py` | PCAP scanner for action packets |
+| `analyze_0x0038.py` | Server key extraction from 0x0038 |
+
+---
+*آخر تحديث: 2026-03-16 | المشروع: IGG Bot Automation*
