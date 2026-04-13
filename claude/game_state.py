@@ -31,15 +31,20 @@ class GameState:
         self.vip_level = 0
         self.server_key = None
         self.raw_packets = {}
-        self.buildings = []
+        self.buildings = {}       # {slot_id: {type, level, raw}}
         self.troops = {}          # {troop_type: count}
         self.items = {}           # {item_id: quantity}
         self.heroes = {}          # {hero_id: hero_data_dict}
         self.marches = {}         # {march_id: march_data_dict}
         self.attributes = {}      # {attr_id: value} from SYN_ATTRIBUTE
-        self.last_error = None    # (error_code, param) from 0x0037
+        self.last_error = None    # (error_code, param, message) from 0x0037
         self.last_march_ack = None
         self.last_update = 0
+        # New: Password gate (0x1B8A)
+        self.password_gate = None       # None=not received, False=skip, True=need pw
+        self.password_challenge = None  # Raw challenge payload
+        # New: Server time
+        self.server_time = 0
 
     def update(self, opcode, payload):
         """Process an incoming packet and update state."""
@@ -81,6 +86,21 @@ class GameState:
 
         elif opcode == OP_MARCH_ACK:
             self._parse_march_ack(payload)
+
+        elif opcode == 0x1B8A:  # PASSWORD_INFO gate
+            self._parse_password_info(payload)
+
+        elif opcode == 0x0097:  # BUILDING_INFO
+            self._parse_buildings(payload)
+
+        elif opcode == 0x0070:  # MARCH_RECALL
+            self._parse_march_recall(payload)
+
+        elif opcode == 0x006F:  # SYNC_MARCH
+            self._parse_sync_march(payload)
+
+        elif opcode == 0x0043:  # SERVER_TIME
+            self._parse_server_time(payload)
 
     def _parse_profile(self, payload):
         """Parse 0x0034 player profile packet."""
@@ -214,11 +234,18 @@ class GameState:
 
     def _parse_error(self, payload):
         """Parse ERROR_STATUS (0x0037): u32 error_code + u32 param + u32 zero."""
+        ERROR_CODES = {
+            0: "OK", 1: "FAILED", 2: "INVALID_PARAM",
+            3: "NOT_ENOUGH_RESOURCES", 5: "NOT_ENOUGH_TROOPS",
+            7: "COOLDOWN", 10: "QUEUE_FULL", 13: "INVALID_TARGET",
+            22: "TIME_ERROR", 38: "MARCH_SLOT_BUSY", 43: "ACCOUNT_ERROR",
+        }
         if len(payload) < 12:
             return
         err_code, param, _ = struct.unpack('<III', payload[0:12])
-        self.last_error = (err_code, param)
-        _log(f"ERROR: code={err_code}, param={param}", level="WARN")
+        msg = ERROR_CODES.get(err_code, f"UNKNOWN_{err_code}")
+        self.last_error = (err_code, param, msg)
+        _log(f"ERROR: {msg} (code={err_code}, param={param})", level="WARN")
 
     def _parse_march_ack(self, payload):
         """Parse MARCH_ACK (0x00B8): 1B (0x00=ok) or 10B+ with details."""
@@ -229,6 +256,75 @@ class GameState:
                 _log("MARCH_ACK: OK")
             else:
                 _log(f"MARCH_ACK: status={status} (payload {len(payload)}B)", level="WARN")
+
+    # ══════════════════════════════════════════════════════════
+    #  NEW PARSERS (from audit reports 56-63)
+    # ══════════════════════════════════════════════════════════
+
+    def _parse_password_info(self, payload):
+        """Parse PASSWORD_INFO (0x1B8A): gate signal for 0x1B8B.
+        If gate byte [4] == 0: no secondary password, do NOT send 0x1B8B.
+        If gate byte [4] != 0: must send 0x1B8B with challenge response.
+        Discovery: decode_deep.py analysis confirmed this flow.
+        """
+        if len(payload) >= 5:
+            gate = payload[4]
+            if gate == 0:
+                self.password_gate = False
+                _log("PASSWORD_INFO: gate=0 (no secondary password - skip 0x1B8B)")
+            else:
+                self.password_gate = True
+                self.password_challenge = payload
+                _log(f"PASSWORD_INFO: gate={gate} (secondary password REQUIRED!)", "WARN")
+        else:
+            self.password_gate = False
+            _log(f"PASSWORD_INFO: short payload ({len(payload)}B), assuming no password")
+
+    def _parse_buildings(self, payload):
+        """Parse BUILDING_INFO (0x0097): u16 count + 19B entries.
+        Entry: u16 slot + u16 type + u16 level + 13B extra.
+        """
+        if len(payload) < 2:
+            return
+        count = struct.unpack('<H', payload[0:2])[0]
+        pos = 2
+        entry_size = 19
+        for _ in range(count):
+            if pos + entry_size > len(payload):
+                break
+            slot = struct.unpack('<H', payload[pos:pos+2])[0]
+            btype = struct.unpack('<H', payload[pos+2:pos+4])[0]
+            level = struct.unpack('<H', payload[pos+4:pos+6])[0]
+            self.buildings[slot] = {
+                'type': btype, 'level': level,
+                'raw': payload[pos:pos+entry_size],
+            }
+            pos += entry_size
+        _log(f"BUILDING_INFO: {count} buildings parsed")
+
+    def _parse_march_recall(self, payload):
+        """Parse MARCH_RECALL (0x0070): march returned, free the slot."""
+        if len(payload) >= 4:
+            march_id = struct.unpack('<I', payload[0:4])[0]
+            if march_id in self.marches:
+                del self.marches[march_id]
+                _log(f"MARCH_RECALL: march #{march_id} returned (slot freed)")
+            else:
+                _log(f"MARCH_RECALL: march #{march_id} (was not tracked)")
+
+    def _parse_sync_march(self, payload):
+        """Parse SYNC_MARCH (0x006F): update march position."""
+        if len(payload) >= 4:
+            march_id = struct.unpack('<I', payload[0:4])[0]
+            if march_id not in self.marches:
+                self.marches[march_id] = {'id': march_id}
+            self.marches[march_id]['last_sync'] = time.time()
+            self.marches[march_id]['sync_data'] = payload
+
+    def _parse_server_time(self, payload):
+        """Parse SERVER_TIME (0x0043): u32 unix timestamp."""
+        if len(payload) >= 4:
+            self.server_time = struct.unpack('<I', payload[0:4])[0]
 
     # ══════════════════════════════════════════════════════════
     #  CONVENIENCE GETTERS
@@ -269,10 +365,16 @@ class GameState:
             speedups = self.get_speedup_items()
             if speedups:
                 lines.append(f"    Speedups: {sum(speedups.values())} items")
+        if self.buildings:
+            lines.append(f"  Buildings: {len(self.buildings)}")
         if self.marches:
             lines.append(f"  Active marches: {len(self.marches)}")
         if self.last_error:
-            lines.append(f"  Last error: code={self.last_error[0]}, param={self.last_error[1]}")
+            lines.append(f"  Last error: {self.last_error[2]} (code={self.last_error[0]}, param={self.last_error[1]})")
+        if self.password_gate is not None:
+            lines.append(f"  Password gate: {'REQUIRED' if self.password_gate else 'not needed'}")
+        if self.server_time:
+            lines.append(f"  Server time: {self.server_time}")
         if self.server_key:
             lines.append(f"  Server Key: 0x{self.server_key:08x}")
         lines.append(f"  Unique opcodes: {len(self.raw_packets)}")

@@ -6,6 +6,7 @@ Manages TCP connection to the game server with heartbeat and listener threads.
 import socket
 import struct
 import time
+import random
 import threading
 from datetime import datetime
 
@@ -42,11 +43,19 @@ class GameConnection:
         self.total_sent = 0
         self.total_recv = 0
         self._callbacks = []
+        self._callback_lock = threading.Lock()
         self.heartbeat_paused = False
 
     def on_packet(self, callback):
         """Register callback for incoming packets: callback(opcode, payload)."""
-        self._callbacks.append(callback)
+        with self._callback_lock:
+            self._callbacks.append(callback)
+
+    def remove_callback(self, callback):
+        """Thread-safe callback removal."""
+        with self._callback_lock:
+            if callback in self._callbacks:
+                self._callbacks.remove(callback)
 
     def connect(self):
         """Full connection flow: login -> world entry -> receive game data -> extract server key."""
@@ -131,7 +140,9 @@ class GameConnection:
 
     def _heartbeat_loop(self):
         while self.running and self.connected:
-            time.sleep(HEARTBEAT_INTERVAL)
+            # Jitter ±0.5s to avoid bot detection (report 62)
+            jitter = random.uniform(-0.5, 0.5)
+            time.sleep(HEARTBEAT_INTERVAL + jitter)
             if not self.running or not self.connected:
                 break
             if self.heartbeat_paused:
@@ -161,7 +172,10 @@ class GameConnection:
                     self.codec = CMsgCodec.from_u32(self.game_state.server_key)
                     _log(f"CMsgCodec now ready (key 0x{self.game_state.server_key:08x})")
 
-                for cb in self._callbacks:
+                # Thread-safe callback iteration (report 62 fix)
+                with self._callback_lock:
+                    cbs = list(self._callbacks)
+                for cb in cbs:
                     cb(opcode, payload)
 
                 # Log non-spam packets

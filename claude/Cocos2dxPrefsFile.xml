@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<map>
+    <string name="LOGIN_CONFIG_CLIENT_IP">197.59.91.21</string>
+    <boolean name="HideLatchDailyTipsInCity-2119964280" value="false" />
+    <string name="SkipADUseTicketTipsTodayTime-577962733">2026-4-7</string>
+    <int name="IGGID_LOGIN_SERVER_KEY545430077" value="153" />
+    <int name="577962733-UDEF_FoodLv" value="2" />
+    <string name="chat_last_World_read_time">MTc3NDUwNjY2NQ==</string>
+    <string name="NewSkinItems-545430077">5003;5004;5005;5007;5008;5009;5010;5013;5014;5018;5026;5031;5032;5036;5046;5077;5300;5304;5309;5315;5318;5367;5430</string>
+    <string name="HideLatchDailyTipsInCityTime-2082384585">1970-1-1</string>
+    <string name="UNREGISTER_LAST_MODIFY">1763710754</string>
+    <string name="recruit-num-577962733">1,-1;</string>
+    <boolean name="firstTutorialDone545430077" value="true" />
+    <int name="DailySmallGiftNewPackTip_577962733" value="60" />
+    <string name="read-package-545430077">391</string>
+    <int name="577962733-MapSearchCacheType" value="2" />
+    <string name="HideLatchDailyTipsInCityTime-545430077">1970-1-1</string>
+    <int name="BeginnerSignKillUI" value="20260408" />
+    <int name="IGGID_LOGIN_SERVER_KEY2119964280" value="215" />
+    <string name="ChatBubbleRedTip577962733">{4,0}</string>
+    <boolean name="firstTutorialDone" value="true" />
+    <string name="chat_last_League_read_time">MTc3NTMwMjA0NA==</string>
+    <string name="HideLatchDailyTipsInCityTime-2119964280">2026-3-30</string>
+    <int name="2119945270-login-date" value="20541" />
+    <int name="DailyChallengeLevelID-577962733" value="0" />
+    <int name="ModuleLoadingWhenPlay-2119945270" value="0" />
+    <int name="2119945270-UDEF_MonsterLv" value="2" />
+    <int name="545430077-login-date" value="20542" />
+    <string name="NewSkinItems-577962733">5003;5004;5007;5008;5009;5018;5026;5031;5032;5077;5300;5304;5309;5315;5318;5430</string>
+    <string name="SkipADUseTicketTipsTodayTime-545430077">2026-3-30</string>
+    <boolean name="HideLatchDailyTipsInCity-2082384585" value="false" />
+    <int name="2082384585-login-date" value="20547" />
+    <string name="ActivityUserClickTime-577962733">{47,1775301777}</string>
+    <int name="IGGID_LOGIN_SERVER_KEY2119945270" value="215" />
+    <boolean name="FIRST_LOGIN_CHOOSE_KEY" value="true" />
+    <string name="WeeklyPrivilege-2082384585">1775451600,1</string>
+    <int name="curLServerNum" value="16" />
+    <string name="ChatBubbleRedTip545430077">{4,0};{5,0};{12,0};{23,0}</string>
+    <string name="HideLatchDailyTipsInCityTime-2119945270">1970-1-1</string>
+    <boolean name="545430077-announcement-click" value="true" />
+    <int name="577962733-login-date" value="20551" />
+    <int name="WeeklyCardMondayRedTip577962733" value="1774325940" />
+    <int name="577962733-UDEF_AlienLv" value="4" />
+    <string name="ChatHornorRedTip545430077">{1,0};{2,0};{3,0}</string>
+    <boolean name="SkipADUseTicketTipsToday-2082384585" value="false" />
+    <boolean name="SkipADUseTicketTipsToday-545430077" value="false" />
+    <int name="SkipADUseTicketTipsTodayType-2082384585" value="-1" />
+    <string name="WeeklyPrivilege-577962733">1776056400,1</string>
+    <int name="577962733-secret-boss-type" value="0" />
+    <int name="ModuleLoadingWhenPlay-2082384585" value="0" />
+    <int name="ModuleLoadingWhenPlay-577962733" value="0" />
+    <int name="SkipADUseTicketTipsTodayType-545430077" value="-1" />
+    <boolean name="firstTutorialDone2082384585" value="true" />
+    <int name="LAST_LOGIN_TYPE_KEY" value="3" />
+    <boolean name="HideLatchDailyTipsInCity-545430077" value="false" />
+    <string name="SkipADUseTicketTipsTodayTime-2082384585">2026-3-30</string>
+    <string name="chat_last_Global_read_time">MTc3NDU4ODcxMg==</string>
+    <int name="577962733-UDEF_MonsterLv" value="1" />
+    <string name="DailyChallengeLevelIDTime-577962733">2026-3-30</string>
+    <int name="2119964280-login-date" value="20542" />
+    <boolean name="AUTO_LOGIN_FLAG_KEY" value="false" />
+    <int name="CGiftPackUI::TableNum" value="0" />
+    <int name="WeeklyCardMondayRedTip545430077" value="1774881651" />
+    <string name="ChatHornorRedTip577962733">{3,0}</string>
+    <int name="IGGID_LOGIN_SERVER_KEY577962733" value="182" />
+    <boolean name="firstTutorialDone577962733" value="true" />
+    <string name="WeeklyPrivilege-545430077">1775451600,1</string>
+    <string name="LOGIN_CONFIG_SERVER_TIME">1775687416-1775687445</string>
+    <boolean name="firstTutorialDone2119945270" value="true" />
+    <boolean name="SkipADUseTicketTipsToday-577962733" value="false" />
+    <string name="read-package-577962733">391,557,521</string>
+    <string name="LimitShopRedPointStatus_577962733_2">1774224000;2;6;0</string>
+    <int name="SkipADUseTicketTipsTodayType-577962733" value="-1" />
+    <string name="HideLatchDailyTipsInCityTime-577962733">1970-1-1</string>
+    <int name="ModuleLoadingWhenPlay-545430077" value="0" />
+    <boolean name="HideLatchDailyTipsInCity-2119945270" value="false" />
+    <int name="MAIN_CITY_SKIN_TYPE" value="1" />
+    <boolean name="577962733-announcement-click" value="false" />
+    <int name="IGGID_LOGIN_SERVER_KEY2082384585" value="211" />
+    <boolean name="HideLatchDailyTipsInCity-577962733" value="false" />
+</map>

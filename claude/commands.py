@@ -31,6 +31,15 @@ from protocol import (
     OP_ACCUMULATION_REWARD, OP_MICROPAY_DAILY, OP_DOWNLOAD_REWARD,
     OP_MOBILIZATION_REWARD, OP_ALLIANCE_HELP, OP_CITY_BUFF_USE,
     OP_REQUEST_MONSTER_POS, OP_OUTFIRE,
+    # New reward opcodes (from audit report 57)
+    OP_EVERYDAY_GIFT_NEW, OP_ACHIEVEMENT_SCORE, OP_LUXURY_REWARD,
+    OP_KING_ROAD_REWARD, OP_EXP_REWARD, OP_EXTRA_GIFTPACK_NEW,
+    OP_RETURN_EVENT_NEW, OP_ARENA_CHALLENGE, OP_ARENA_TIMES_RESTORE,
+    OP_EXPEDITION_BATTLE, OP_LUCKY_TURNTABLE, OP_WHEEL_TURN,
+    OP_DOUBLE_LOTTERY, OP_LEAGUEPASS_REWARD, OP_LEAGUEPASS_TASK,
+    OP_LEAGUE_BF_REWARD, OP_BIG_BOSS_DONATE, OP_LOSTLAND_DONATE,
+    OP_SERVER_MISSION, OP_DAILYCONSUME_REWARD, OP_RECHARGE_BONUS,
+    OP_EXCHANGE_REWARD,
     # Game constants
     MARCH_TYPE_GATHER, BUILD_OP_UPGRADE, BUILD_OP_DEMOLISH, BUILD_OP_BUILD_NEW,
 )
@@ -113,128 +122,68 @@ class CommandEngine:
         struct.pack_into('<I', data, 8, 0)
         return self._encrypted_packet(OP_RESEARCH, bytes(data))
 
-    def start_march(self, target_x, target_y, march_type=3, march_slot=1,
-                    kingdom_id=0xB6, troops=None, tile_type=0, flags=None):
+    def start_march(self, target_x, target_y, march_type=0x1749, march_slot=1,
+                    kingdom_id=0xB6, hero_id=0xFF, resource_type=4):
         """Start a march (0x0CE8 = CMSG_START_MARCH_NEW).
-        ARM64 VERIFIED: 20 fields, 50B base + N*4B per troop entry.
+        PCAP-VERIFIED 46-byte format (from real game client captures).
 
-        Payload layout (from packData disassembly at 0x05212294):
-          [0:2]   sub_type (u16)
-          [2:4]   march_type (u16) - 1=attack, 2=scout, 3=gather, 5=reinforce
-          [4:9]   5 flag bytes (u8 each)
-          [9:17]  target coords (u64 = x_u32 | y_u32<<32)
-          [17:19] kingdom_id (u16)
-          [19:21] march_slot (u16)
-          [21]    array_count (u8)
-          [22+]   troop array (N * u32)
-          [+4]    tile_type (u32) - resource type for gather
-          [+1]    sub_flag (u8)
-          [+8]    rally_param (u64)
-          [+1]    extra_flag_0 (u8)
-          [+1]    extra_flag_1 (u8)
-          [+8]    param_2 (u64)
-          [+1]    extra_flag_2 (u8)
-          [+4]    param_3 (u32)
-
-        Args:
-            target_x: Target tile X coordinate
-            target_y: Target tile Y coordinate
-            march_type: 1=attack, 2=scout, 3=gather, 5=reinforce
-            march_slot: March queue slot (1-5)
-            kingdom_id: Target kingdom (0xB6=182 default)
-            troops: List of u32 troop entries, or None for server default
-            tile_type: Resource type for gathering (0=food, 1=stone, 2=wood, 3=ore, 4=gold)
-            flags: Optional 5-byte flags, default all zeros
+        Payload layout (46 bytes):
+          [0]     march_slot (u8)
+          [1:4]   random header (3 bytes)
+          [4:6]   march_type (u16 LE) - 0x1749=gather, 0x174A=gather_w2
+          [6:9]   zeros
+          [9:11]  tile_x (u16 LE)
+          [11:13] tile_y (u16 LE)
+          [13]    0x01 flag
+          [14]    hero_id (u8)
+          [15:18] zeros
+          [18]    kingdom_id (u8)
+          [19:22] zeros
+          [22]    resource_type (u8) - 4=food/wheat
+          [23:33] zeros
+          [33:37] igg_id (u32 LE)
+          [37:46] zeros
         """
-        if troops is None:
-            troops = []
-        if flags is None:
-            flags = [0, 0, 0, 0, 0]
-
-        array_count = len(troops)
-        # 22B header + N*4B troops + 28B tail = 50 + N*4
-        total_size = 50 + array_count * 4
-
-        data = bytearray(total_size)
-        pos = 0
-
-        # sub_type (u16)
-        struct.pack_into('<H', data, pos, 0)
-        pos += 2
-        # march_type (u16)
-        struct.pack_into('<H', data, pos, march_type)
-        pos += 2
-        # 5 flag bytes
-        for i in range(5):
-            data[pos] = flags[i] if i < len(flags) else 0
-            pos += 1
-        # target coords as u64 (x in low 32, y in high 32)
-        coords = (target_x & 0xFFFFFFFF) | ((target_y & 0xFFFFFFFF) << 32)
-        struct.pack_into('<Q', data, pos, coords)
-        pos += 8
-        # kingdom_id (u16)
-        struct.pack_into('<H', data, pos, kingdom_id)
-        pos += 2
-        # march_slot (u16)
-        struct.pack_into('<H', data, pos, march_slot)
-        pos += 2
-        # array_count (u8)
-        data[pos] = array_count & 0xFF
-        pos += 1
-        # troop array (N * u32)
-        for t in troops:
-            struct.pack_into('<I', data, pos, t)
-            pos += 4
-        # tile_type (u32)
-        struct.pack_into('<I', data, pos, tile_type)
-        pos += 4
-        # sub_flag (u8)
-        data[pos] = 0
-        pos += 1
-        # rally_param (u64)
-        struct.pack_into('<Q', data, pos, 0)
-        pos += 8
-        # extra_flag_0 (u8)
-        data[pos] = 0
-        pos += 1
-        # extra_flag_1 (u8)
-        data[pos] = 0
-        pos += 1
-        # param_2 (u64)
-        struct.pack_into('<Q', data, pos, 0)
-        pos += 8
-        # extra_flag_2 (u8)
-        data[pos] = 0
-        pos += 1
-        # param_3 (u32)
-        struct.pack_into('<I', data, pos, 0)
-        pos += 4
-
+        data = bytearray(46)
+        data[0] = march_slot & 0xFF
+        data[1] = random.randint(0, 255)
+        data[2] = random.randint(0, 255)
+        data[3] = random.randint(0, 255)
+        struct.pack_into('<H', data, 4, march_type)
+        # [6:9] zeros
+        struct.pack_into('<H', data, 9, target_x & 0xFFFF)
+        struct.pack_into('<H', data, 11, target_y & 0xFFFF)
+        data[13] = 0x01
+        data[14] = hero_id & 0xFF
+        # [15:18] zeros
+        data[18] = kingdom_id & 0xFF
+        # [19:22] zeros
+        data[22] = resource_type & 0xFF
+        # [23:33] zeros
+        struct.pack_into('<I', data, 33, self.igg_id)
+        # [37:46] zeros
         return self._encrypted_packet(OP_START_MARCH, bytes(data))
 
     def gather(self, target_x, target_y, march_slot=1, kingdom_id=0xB6,
-               troops=None, resource_type=0):
-        """Shortcut: Send a gather march to a resource tile.
-        Args:
-            resource_type: 0=food, 1=stone, 2=wood, 3=ore, 4=gold
-        """
+               hero_id=0xFF, resource_type=4):
+        """Gather resources from a tile. resource_type: 4=food/wheat."""
         return self.start_march(
-            target_x, target_y, march_type=3, march_slot=march_slot,
-            kingdom_id=kingdom_id, troops=troops, tile_type=resource_type,
+            target_x, target_y, march_type=MARCH_TYPE_GATHER, march_slot=march_slot,
+            kingdom_id=kingdom_id, hero_id=hero_id, resource_type=resource_type,
         )
 
-    def attack(self, target_x, target_y, march_slot=1, kingdom_id=0xB6, troops=None):
-        """Shortcut: Send an attack march."""
+    def attack(self, target_x, target_y, march_slot=1, kingdom_id=0xB6, hero_id=0xFF):
+        """Attack a target tile."""
         return self.start_march(
             target_x, target_y, march_type=1, march_slot=march_slot,
-            kingdom_id=kingdom_id, troops=troops,
+            kingdom_id=kingdom_id, hero_id=hero_id, resource_type=0,
         )
 
     def scout(self, target_x, target_y, kingdom_id=0xB6):
-        """Shortcut: Scout a target tile."""
+        """Scout a target tile."""
         return self.start_march(
             target_x, target_y, march_type=2, march_slot=1,
-            kingdom_id=kingdom_id,
+            kingdom_id=kingdom_id, hero_id=0, resource_type=0,
         )
 
     def cancel_march(self, march_id):
@@ -567,13 +516,11 @@ class CommandEngine:
         """
         return self._plain_packet(OP_REQUEST_MONSTER_POS, struct.pack('<H', monster_level))
 
-    def attack_monster(self, target_x, target_y, march_slot=1, kingdom_id=0xB6, troops=None):
-        """Attack a monster/rebel at given coordinates.
-        Shortcut for start_march with march_type=1 (attack).
-        """
+    def attack_monster(self, target_x, target_y, march_slot=1, kingdom_id=0xB6, hero_id=0xFF):
+        """Attack a monster/rebel at given coordinates."""
         return self.start_march(
             target_x, target_y, march_type=1, march_slot=march_slot,
-            kingdom_id=kingdom_id, troops=troops,
+            kingdom_id=kingdom_id, hero_id=hero_id, resource_type=0,
         )
 
     # ══════════════════════════════════════════════════════════
@@ -629,9 +576,121 @@ class CommandEngine:
         return self.find_monster(monster_level)
 
     def daily_routine(self):
-        """Full daily automation: collect rewards + alliance help + extinguish fire.
+        """Full daily automation: collect ALL rewards + alliance help.
+        Includes 22 new reward commands from audit report 57.
         Returns: list of packets to send sequentially."""
         packets = self.collect_all_rewards()
         packets.append(self.alliance_help())
         packets.append(self.extinguish_fire())
+        # New rewards (from audit)
+        packets.extend(self.collect_new_rewards())
         return packets
+
+    # ══════════════════════════════════════════════════════════
+    #  NEW COMMANDS (from audit report 57 - 22 commands)
+    # ══════════════════════════════════════════════════════════
+
+    def everyday_gift_new(self, gift_id=0):
+        """Claim new daily gift (0x189D, fire & forget)."""
+        return self._plain_packet(OP_EVERYDAY_GIFT_NEW, struct.pack('<H', gift_id))
+
+    def achievement_score_reward(self, score_id=0):
+        """Claim achievement score reward (0x0226)."""
+        return self._plain_packet(OP_ACHIEVEMENT_SCORE, struct.pack('<H', score_id))
+
+    def luxury_reward(self, reward_id=0):
+        """Claim luxury reward (0x0989, fire & forget!)."""
+        return self._plain_packet(OP_LUXURY_REWARD, struct.pack('<H', reward_id))
+
+    def king_road_reward(self, quest_id=0):
+        """Claim King's Road reward (0x0993)."""
+        return self._plain_packet(OP_KING_ROAD_REWARD, struct.pack('<H', quest_id))
+
+    def exp_reward(self, reward_id=0):
+        """Claim championship EXP reward (0x0A07)."""
+        return self._plain_packet(OP_EXP_REWARD, struct.pack('<H', reward_id))
+
+    def extra_giftpack_new(self, gift_id=0):
+        """Claim extra giftpack (0x16B2, CRITICAL fire & forget!)."""
+        return self._plain_packet(OP_EXTRA_GIFTPACK_NEW, struct.pack('<H', gift_id))
+
+    def return_event_reward(self, event_id=0):
+        """Claim return event reward (0x16CE, CRITICAL fire & forget!)."""
+        return self._plain_packet(OP_RETURN_EVENT_NEW, struct.pack('<H', event_id))
+
+    def arena_challenge(self, opponent_id=0):
+        """Start arena fight (0x05F1)."""
+        return self._plain_packet(OP_ARENA_CHALLENGE, struct.pack('<H', opponent_id))
+
+    def arena_restore_times(self, type_id=0):
+        """Restore arena attempts (0x05EB, fire & forget!)."""
+        return self._plain_packet(OP_ARENA_TIMES_RESTORE, struct.pack('<H', type_id))
+
+    def expedition_battle(self, stage_id=0):
+        """Fight expedition stage (0x02B6)."""
+        return self._plain_packet(OP_EXPEDITION_BATTLE, struct.pack('<H', stage_id))
+
+    def lucky_spin(self, spin_id=0):
+        """Lucky turntable spin (0x039C)."""
+        return self._plain_packet(OP_LUCKY_TURNTABLE, struct.pack('<H', spin_id))
+
+    def wheel_turn(self, wheel_id=0):
+        """Wheel turn (0x0E75)."""
+        return self._plain_packet(OP_WHEEL_TURN, struct.pack('<H', wheel_id))
+
+    def double_lottery(self, play_id=0):
+        """Double lottery play (0x1D4D)."""
+        return self._plain_packet(OP_DOUBLE_LOTTERY, struct.pack('<H', play_id))
+
+    def leaguepass_reward(self, reward_id=0):
+        """Claim Guild Pass reward (0x166C)."""
+        return self._plain_packet(OP_LEAGUEPASS_REWARD, struct.pack('<H', reward_id))
+
+    def leaguepass_task(self, task_id=0):
+        """Complete Guild Pass task (0x1670)."""
+        return self._plain_packet(OP_LEAGUEPASS_TASK, struct.pack('<H', task_id))
+
+    def league_bf_reward(self, reward_id=0):
+        """Claim league battlefield reward (0x07EF)."""
+        return self._plain_packet(OP_LEAGUE_BF_REWARD, struct.pack('<H', reward_id))
+
+    def big_boss_donate(self, point_id=0):
+        """Guild boss donate points (0x1F0F)."""
+        return self._plain_packet(OP_BIG_BOSS_DONATE, struct.pack('<H', point_id))
+
+    def lostland_donate(self, resource_id=0):
+        """Lost Land donate resources (0x15B7)."""
+        return self._plain_packet(OP_LOSTLAND_DONATE, struct.pack('<H', resource_id))
+
+    def server_mission(self, mission_id=0):
+        """Receive server mission (0x13BD)."""
+        return self._plain_packet(OP_SERVER_MISSION, struct.pack('<H', mission_id))
+
+    def dailyconsume_reward(self, reward_id=0):
+        """Claim daily consume reward (0x1453)."""
+        return self._plain_packet(OP_DAILYCONSUME_REWARD, struct.pack('<H', reward_id))
+
+    def recharge_bonus(self, bonus_id=0):
+        """Claim recharge bonus (0x1774)."""
+        return self._plain_packet(OP_RECHARGE_BONUS, struct.pack('<H', bonus_id))
+
+    def exchange_reward(self, exchange_id=0):
+        """Claim exchange reward (0x099F)."""
+        return self._plain_packet(OP_EXCHANGE_REWARD, struct.pack('<H', exchange_id))
+
+    def collect_new_rewards(self):
+        """Collect all NEW rewards discovered in audit.
+        Returns list of packets for fire-and-forget reward commands."""
+        return [
+            self.everyday_gift_new(),
+            self.achievement_score_reward(),
+            self.luxury_reward(),
+            self.king_road_reward(),
+            self.exp_reward(),
+            self.extra_giftpack_new(),
+            self.return_event_reward(),
+            self.server_mission(),
+            self.dailyconsume_reward(),
+            self.recharge_bonus(),
+            self.exchange_reward(),
+        ]

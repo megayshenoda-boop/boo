@@ -12,10 +12,10 @@ GAME_ID = os.environ.get("GAME_ID", "1057029902")
 GAME_ID_HEX = 0x3F00FF0E
 WORLD_ID = int(os.environ.get("WORLD_ID", "211"))
 
-# Credentials
-EMAIL = os.environ.get("IGG_EMAIL", "hdadhybat@gmail.com")
-PASSWORD = os.environ.get("IGG_PASSWORD", "AS123456")
-STORED_ACCESS_KEY = os.environ.get("IGG_ACCESS_KEY", "63f22dbfb60fae3ae3d7671491329518")
+# Credentials (MUST be set via environment variables!)
+EMAIL = os.environ.get("IGG_EMAIL", "")
+PASSWORD = os.environ.get("IGG_PASSWORD", "")
+STORED_ACCESS_KEY = os.environ.get("IGG_ACCESS_KEY", "")
 
 # Network
 GATEWAY_IP = "54.93.167.80"
@@ -27,7 +27,7 @@ HMAC_KEY = "07Z8D2AoYFGGivw40fEOj9swnpyF7Pw3ilKpVKnJ"
 CQ_XOR_KEY = ("CQ_secret" * 4)[:32]  # "CQ_secretCQ_secretCQ_secretCQ_se"
 
 # User Agent
-USER_AGENT = f"{GAME_ID}/6.1.0 Dalvik/2.1.0 (Linux; U; Android 7.1.2; SM-G9880 Build/N2G47H)"
+USER_AGENT = f"{GAME_ID}/6.3.0 Dalvik/2.1.0 (Linux; U; Android 7.1.2; SM-G9880 Build/N2G47H)"
 
 # ADB (for emulator key extraction)
 ADB_PATH = os.environ.get("ADB_PATH", r"D:\Program Files\Microvirt\MEmu\adb.exe")

@@ -1,0 +1,195 @@
+﻿Found 6 PCAPs
+
+================================================================================
+  PCAPdroid_25_Mar_07_05_12.pcap  SK=0x02677C7E
+================================================================================
+  0x0023 (62B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0023 (62B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0834 (46B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x1B8B (26B): decoded=Offset6
+  0x0CEB (18B): StdDecode OK, plain(10B)=01ed0273220000000001
+  0x006E (9B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x006E (9B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+
+  *** 0x0CE8 GATHER (54B) ***
+    StdDecode OK: 01f8fcde49170000002602530301ff000000b60000000400000000000000000000ed027322000000000000000000
+    Plain (46B) breakdown:
+      [0]  march_slot  = 1
+      [1:4] nonce      = f8fcde
+      [4:6] march_type = 0x1749
+      [6:9]            = 000000
+      [9:11] tile_x    = 550
+      [11:13] tile_y   = 851
+      [13] flag        = 1
+      [14] hero_id     = 255
+      [15:18]          = 000000
+      [18] kingdom     = 182
+      [19:22]          = 000000
+      [22] purpose     = 4
+      [23:33]          = 00000000000000000000
+      [33:37] igg_id   = 577962733
+      [37:46]          = 000000000000000000
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+
+================================================================================
+  PCAPdroid_25_Mar_07_29_40.pcap  SK=0xB4B19AD1
+================================================================================
+  0x000B (79B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x001F (64B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0021 (21B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0834 (46B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x1B8B (26B): decoded=Offset6
+  0x0043 (20B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0043 (20B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0CEB (18B): StdDecode OK, plain(10B)=01ed0273220000000001
+  0x006E (9B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x006E (9B): CANNOT DECODE (std_ok=False, off6_ok=False)
+
+  *** 0x0CE8 GATHER (54B) ***
+    StdDecode OK: 0109d5de49170000005302550301ff000000b60000000400000000000000000000ed027322000000000000000000
+    Plain (46B) breakdown:
+      [0]  march_slot  = 1
+      [1:4] nonce      = 09d5de
+      [4:6] march_type = 0x1749
+      [6:9]            = 000000
+      [9:11] tile_x    = 595
+      [11:13] tile_y   = 853
+      [13] flag        = 1
+      [14] hero_id     = 255
+      [15:18]          = 000000
+      [18] kingdom     = 182
+      [19:22]          = 000000
+      [22] purpose     = 4
+      [23:33]          = 00000000000000000000
+      [33:37] igg_id   = 577962733
+      [37:46]          = 000000000000000000
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+
+================================================================================
+  PCAPdroid_27_Mar_09_17_04.pcap  SK=0x88587D29
+================================================================================
+  0x000B (79B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x001F (64B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0021 (21B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0834 (46B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x1B8B (26B): decoded=Offset6
+  0x0043 (20B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0043 (20B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0CEB (18B): StdDecode OK, plain(10B)=01ed0273220000000001
+  0x006E (9B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x006E (9B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0323 (11B): CANNOT DECODE (std_ok=False, off6_ok=False)
+
+  *** 0x0CE8 GATHER (54B) ***
+    StdDecode OK: 016014f049170000003a02250301ff000000b60000000400000000000000000000ed027322000000000000000000
+    Plain (46B) breakdown:
+      [0]  march_slot  = 1
+      [1:4] nonce      = 6014f0
+      [4:6] march_type = 0x1749
+      [6:9]            = 000000
+      [9:11] tile_x    = 570
+      [11:13] tile_y   = 805
+      [13] flag        = 1
+      [14] hero_id     = 255
+      [15:18]          = 000000
+      [18] kingdom     = 182
+      [19:22]          = 000000
+      [22] purpose     = 4
+      [23:33]          = 00000000000000000000
+      [33:37] igg_id   = 577962733
+      [37:46]          = 000000000000000000
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x006E (9B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0CE7 (20B): StdDecode OK, plain(12B)=01000100ed02732200000000
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+
+================================================================================
+  PCAPdroid_28_Mar_10_41_12.pcap  SK=0x0B46E321
+================================================================================
+  0x0023 (62B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0023 (62B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0834 (42B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x1B8B (26B): decoded=Offset6
+  0x0CEB (18B): StdDecode OK, plain(10B)=01ed0273220000000001
+  0x006E (9B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x006E (9B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0323 (11B): CANNOT DECODE (std_ok=False, off6_ok=False)
+
+  *** 0x0CE8 GATHER (54B) ***
+    StdDecode OK: 017f93f7491700000039026a0301e2000000b60000000400000000000000000000ed027322000000000000000000
+    Plain (46B) breakdown:
+      [0]  march_slot  = 1
+      [1:4] nonce      = 7f93f7
+      [4:6] march_type = 0x1749
+      [6:9]            = 000000
+      [9:11] tile_x    = 569
+      [11:13] tile_y   = 874
+      [13] flag        = 1
+      [14] hero_id     = 226
+      [15:18]          = 000000
+      [18] kingdom     = 182
+      [19:22]          = 000000
+      [22] purpose     = 4
+      [23:33]          = 00000000000000000000
+      [33:37] igg_id   = 577962733
+      [37:46]          = 000000000000000000
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x006E (9B): CANNOT DECODE (std_ok=False, off6_ok=False)
+
+================================================================================
+  PCAPdroid_29_Mar_10_53_55.pcap  SK=0x61607E47
+================================================================================
+  0x0023 (62B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0023 (62B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0834 (46B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x1B8B (26B): decoded=Offset6
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0BD1 (36B): StdDecode OK, plain(28B)=01000000d700000000000000ed02732200000000...
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0043 (20B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+
+================================================================================
+  PCAPdroid_30_Mar_19_56_17.pcap  SK=0xBDC1617D
+================================================================================
+  0x0023 (62B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x1B8B (26B): decoded=Offset6
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0BD1 (36B): StdDecode OK, plain(28B)=01000000ca07000000000000ed02732200000000...
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0042 (12B): CANNOT DECODE (std_ok=False, off6_ok=False)
+  0x0043 (20B): CANNOT DECODE (std_ok=False, off6_ok=False)
+
+DONE

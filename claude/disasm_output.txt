@@ -1,0 +1,1057 @@
+﻿
+================================================================================
+  LogicPassword::encodePassword(string&, int) @ 0x039FAD00
+================================================================================
+  0x039FAD00: sub        sp, sp, #0x40
+  0x039FAD04: stp        x29, x30, [sp, #0x10]
+  0x039FAD08: str        x21, [sp, #0x20]
+  0x039FAD0C: stp        x20, x19, [sp, #0x30]
+  0x039FAD10: add        x29, sp, #0x10
+  0x039FAD14: mrs        x21, tpidr_el0
+  0x039FAD18: ldr        x8, [x21, #0x28]
+  0x039FAD1C: str        x8, [sp, #8]
+  0x039FAD20: ldrb       w8, [x1]
+  0x039FAD24: ldr        x9, [x1, #8]
+  0x039FAD28: lsr        x10, x8, #1
+  0x039FAD2C: tst        w8, #1
+  0x039FAD30: csel       x9, x10, x9, eq
+  0x039FAD34: cbz        x9, #0x39fadd0
+  0x039FAD38: ldr        x9, [x1, #0x10]
+  0x039FAD3C: tst        w8, #1
+  0x039FAD40: mov        w19, w2
+  0x039FAD44: csinc      x0, x9, x1, ne
+  0x039FAD48: bl         #0x5bde040  ; atoi
+  0x039FAD4C: mov        w8, #1
+  0x039FAD50: sub        w9, w19, #1
+  0x039FAD54: mov        w20, w0
+  0x039FAD58: stp        w8, w9, [sp]
+  0x039FAD5C: bl         #0x5be1130  ; cocos2d::RandomHelper::getEngine
+  0x039FAD60: mov        x1, x0
+  0x039FAD64: mov        x0, sp
+  0x039FAD68: mov        x2, sp
+  0x039FAD6C: bl         #0x5beb7f0  ; uniform_int_distribution::operator()(mt19937)
+  0x039FAD70: adrp       x8, #0x255b000  ; page=0x0255B000
+  0x039FAD74: sxtw       x9, w0
+  0x039FAD78: smaddl     x19, w20, w19, x9
+  0x039FAD7C: ldr        d0, [x8, #0x238]
+  0x039FAD80: str        d0, [sp]
+  0x039FAD84: bl         #0x5be1130  ; cocos2d::RandomHelper::getEngine
+  0x039FAD88: mov        x1, x0
+  0x039FAD8C: mov        x0, sp
+  0x039FAD90: mov        x2, sp
+  0x039FAD94: bl         #0x5beb7f0  ; uniform_int_distribution::operator()(mt19937)
+  0x039FAD98: mov        x9, #0x1000
+  0x039FAD9C: sxtw       x8, w0
+  0x039FADA0: movk       x9, #0xd4a5, lsl #16
+  0x039FADA4: movk       x9, #0xe8, lsl #32
+  0x039FADA8: madd       x0, x8, x9, x19
+  0x039FADAC: ldr        x8, [x21, #0x28]
+  0x039FADB0: ldr        x9, [sp, #8]
+  0x039FADB4: cmp        x8, x9
+  0x039FADB8: b.ne       #0x39fade4
+  0x039FADBC: ldp        x20, x19, [sp, #0x30]
+  0x039FADC0: ldr        x21, [sp, #0x20]
+  0x039FADC4: ldp        x29, x30, [sp, #0x10]
+  0x039FADC8: add        sp, sp, #0x40
+  0x039FADCC: ret        
+
+================================================================================
+  send_check_password_helper @ 0x039FAC60
+================================================================================
+  0x039FAC60: sub        sp, sp, #0x50
+  0x039FAC64: stp        x29, x30, [sp, #0x30]
+  0x039FAC68: stp        x20, x19, [sp, #0x40]
+  0x039FAC6C: add        x29, sp, #0x30
+  0x039FAC70: mrs        x20, tpidr_el0
+  0x039FAC74: mov        x19, x1
+  0x039FAC78: adrp       x1, #0x258f000  ; page=0x0258F000
+  0x039FAC7C: add        x1, x1, #0xace
+  0x039FAC80: ldr        x8, [x20, #0x28]
+  0x039FAC84: add        x0, x0, #0x40
+  0x039FAC88: stur       x8, [x29, #-8]
+  0x039FAC8C: bl         #0x5bdd240  ; std::string::assign
+  0x039FAC90: add        x0, sp, #8
+  0x039FAC94: bl         #0x5c21790  ; CMSG_PASSWORD_CHECK_REQUEST::C1
+  0x039FAC98: mov        w2, #0x4240  ; low16 of 1,000,000 (0xF4240)
+  0x039FAC9C: mov        x1, x19
+  0x039FACA0: movk       w2, #0xf, lsl #16
+  0x039FACA4: bl         #0x5c217a0  ; LogicPassword::encodePassword
+  0x039FACA8: str        x0, [sp, #0x20]
+  0x039FACAC: bl         #0x5bdca50  ; MessageSubject::singleton
+  0x039FACB0: ldr        x8, [x0]
+  0x039FACB4: ldr        x8, [x8, #0x50]
+  0x039FACB8: blr        x8
+  0x039FACBC: mov        x19, x0
+  0x039FACC0: add        x0, sp, #8
+  0x039FACC4: mov        x1, x19
+  0x039FACC8: bl         #0x5c217b0  ; CMSG_PASSWORD_CHECK_REQUEST::packData
+  0x039FACCC: bl         #0x5bdca50  ; MessageSubject::singleton
+  0x039FACD0: ldr        x1, [x19]
+  0x039FACD4: ldrh       w2, [x19, #0xa]
+  0x039FACD8: bl         #0x5bdcd10  ; MessageSubject::sendMsg
+  0x039FACDC: ldr        x8, [x20, #0x28]
+  0x039FACE0: ldur       x9, [x29, #-8]
+  0x039FACE4: cmp        x8, x9
+  0x039FACE8: b.ne       #0x39facfc
+  0x039FACEC: ldp        x20, x19, [sp, #0x40]
+  0x039FACF0: ldp        x29, x30, [sp, #0x30]
+  0x039FACF4: add        sp, sp, #0x50
+  0x039FACF8: ret        
+
+================================================================================
+  CMSG_PASSWORD_CHECK_REQUEST::C1 @ 0x0527367C
+================================================================================
+  0x0527367C: mov        w8, #0x1b8b0000
+  0x05273680: strh       wzr, [x0, #4]
+  0x05273684: str        w8, [x0]
+  0x05273688: stp        xzr, xzr, [x0, #0x10]
+  0x0527368C: ret        
+
+================================================================================
+  CMSG_PASSWORD_CHECK_REQUEST::packData @ 0x05273690
+================================================================================
+  0x05273690: stp        x29, x30, [sp, #-0x30]!
+  0x05273694: stp        x22, x21, [sp, #0x10]
+  0x05273698: stp        x20, x19, [sp, #0x20]
+  0x0527369C: mov        x29, sp
+  0x052736A0: ldr        x22, [x1]
+  0x052736A4: cbz        x22, #0x5273914
+  0x052736A8: ldr        w8, [x1, #0xc]
+  0x052736AC: mov        x20, x1
+  0x052736B0: mov        x19, x0
+  0x052736B4: cbnz       w8, #0x5273700
+  0x052736B8: ldrh       w8, [x20, #0xa]
+  0x052736BC: ldrh       w9, [x20, #8]
+  0x052736C0: add        w10, w8, #2
+  0x052736C4: cmp        w10, w9
+  0x052736C8: b.ls       #0x52736e4
+  0x052736CC: mov        w8, #1
+  0x052736D0: str        w8, [x20, #0xc]
+  0x052736D4: bl         #0x5c6dbd0  ; PLT_write_u16?
+  0x052736D8: ldr        w8, [x20, #0xc]
+  0x052736DC: cbnz       w8, #0x5273748
+  0x052736E0: b          #0x527370c
+  0x052736E4: ldrh       w9, [x19]
+  0x052736E8: strh       w9, [x22, w8, uxtw]
+  0x052736EC: ldrh       w8, [x20, #0xa]
+  0x052736F0: ldr        w9, [x20, #0xc]
+  0x052736F4: add        w8, w8, #2
+  0x052736F8: strh       w8, [x20, #0xa]
+  0x052736FC: cbz        w9, #0x52737ac
+  0x05273700: bl         #0x5c6dbd0  ; PLT_write_u16?
+  0x05273704: ldr        w8, [x20, #0xc]
+  0x05273708: cbnz       w8, #0x5273748
+  0x0527370C: ldrh       w8, [x20, #0xa]
+  0x05273710: ldrh       w9, [x20, #8]
+  0x05273714: add        w10, w8, #2
+  0x05273718: cmp        w10, w9
+  0x0527371C: b.ls       #0x527372c
+  0x05273720: mov        w8, #1
+  0x05273724: str        w8, [x20, #0xc]
+  0x05273728: b          #0x5273748
+  0x0527372C: ldr        x9, [x20]
+  0x05273730: strh       w0, [x9, w8, uxtw]
+  0x05273734: ldrh       w8, [x20, #0xa]
+  0x05273738: ldr        w9, [x20, #0xc]
+  0x0527373C: add        w8, w8, #2
+  0x05273740: strh       w8, [x20, #0xa]
+  0x05273744: cbz        w9, #0x52737ec
+  0x05273748: bl         #0x5c6dbe0  ; PLT_write_u64?
+  0x0527374C: ldr        w8, [x20, #0xc]
+  0x05273750: cbnz       w8, #0x5273798
+  0x05273754: ldrh       w8, [x20, #0xa]
+  0x05273758: ldrh       w9, [x20, #8]
+  0x0527375C: add        w10, w8, #8
+  0x05273760: cmp        w10, w9
+  0x05273764: b.ls       #0x527377c
+  0x05273768: mov        w8, #1
+  0x0527376C: str        w8, [x20, #0xc]
+  0x05273770: ldr        x21, [x20]
+  0x05273774: cbnz       x21, #0x52737a0
+  0x05273778: b          #0x52738e0
+  0x0527377C: ldr        x9, [x20]
+  0x05273780: str        x0, [x9, w8, uxtw]
+  0x05273784: ldrh       w8, [x20, #0xa]
+  0x05273788: ldr        w9, [x20, #0xc]
+  0x0527378C: add        w8, w8, #8
+  0x05273790: strh       w8, [x20, #0xa]
+  0x05273794: cbz        w9, #0x52738a8
+  0x05273798: ldr        x21, [x20]
+  0x0527379C: cbz        x21, #0x52738e0
+  0x052737A0: ldrh       w8, [x20, #0xa]
+  0x052737A4: strh       w8, [x21]
+  0x052737A8: b          #0x52738e4
+  0x052737AC: and        w9, w8, #0xffff
+  0x052737B0: ldrh       w10, [x20, #8]
+  0x052737B4: add        w9, w9, #2
+  0x052737B8: cmp        w9, w10
+  0x052737BC: b.hi       #0x52736cc
+  0x052737C0: ldr        x9, [x20]
+  0x052737C4: ldrh       w10, [x19, #2]
+  0x052737C8: and        x8, x8, #0xffff
+  0x052737CC: strh       w10, [x9, x8]
+  0x052737D0: ldrh       w8, [x20, #0xa]
+  0x052737D4: add        w8, w8, #2
+  0x052737D8: strh       w8, [x20, #0xa]
+  0x052737DC: bl         #0x5c6dbd0  ; PLT_write_u16?
+  0x052737E0: ldr        w8, [x20, #0xc]
+  0x052737E4: cbnz       w8, #0x5273748
+  0x052737E8: b          #0x527370c
+  0x052737EC: ldrh       w9, [x20, #8]
+  0x052737F0: cmp        w9, w8, uxth
+  0x052737F4: b.ls       #0x5273720
+  0x052737F8: ldr        x9, [x20]
+  0x052737FC: ldrb       w10, [x19, #6]
+  0x05273800: and        x8, x8, #0xffff
+  0x05273804: strb       w10, [x9, x8]
+  0x05273808: ldrh       w8, [x20, #0xa]
+  0x0527380C: ldr        w9, [x20, #0xc]
+  0x05273810: add        w8, w8, #1
+  0x05273814: strh       w8, [x20, #0xa]
+  0x05273818: cbnz       w9, #0x5273748
+  0x0527381C: ldrh       w8, [x20, #0xa]
+  0x05273820: ldrh       w9, [x20, #8]
+  0x05273824: cmp        w8, w9
+  0x05273828: b.hs       #0x5273720
+  0x0527382C: ldr        x9, [x20]
+  0x05273830: ldrb       w10, [x19, #7]
+  0x05273834: strb       w10, [x9, w8, uxtw]
+  0x05273838: ldrh       w8, [x20, #0xa]
+  0x0527383C: ldr        w9, [x20, #0xc]
+  0x05273840: add        w8, w8, #1
+  0x05273844: strh       w8, [x20, #0xa]
+  0x05273848: cbnz       w9, #0x5273748
+  0x0527384C: ldrh       w8, [x20, #0xa]
+  0x05273850: ldrh       w9, [x20, #8]
+  0x05273854: cmp        w8, w9
+  0x05273858: b.hs       #0x5273720
+  0x0527385C: ldr        x9, [x20]
+  0x05273860: ldrb       w10, [x19, #8]
+  0x05273864: strb       w10, [x9, w8, uxtw]
+  0x05273868: ldrh       w8, [x20, #0xa]
+  0x0527386C: ldr        w9, [x20, #0xc]
+  0x05273870: add        w8, w8, #1
+  0x05273874: strh       w8, [x20, #0xa]
+  0x05273878: cbnz       w9, #0x5273748
+  0x0527387C: ldrh       w8, [x20, #0xa]
+  0x05273880: ldrh       w9, [x20, #8]
+  0x05273884: cmp        w8, w9
+  0x05273888: b.hs       #0x5273720
+  0x0527388C: ldr        x9, [x20]
+  0x05273890: ldrb       w10, [x19, #9]
+  0x05273894: strb       w10, [x9, w8, uxtw]
+  0x05273898: ldrh       w8, [x20, #0xa]
+  0x0527389C: add        w8, w8, #1
+  0x052738A0: strh       w8, [x20, #0xa]
+  0x052738A4: b          #0x5273748
+  0x052738A8: and        w9, w8, #0xffff
+  0x052738AC: ldrh       w10, [x20, #8]
+  0x052738B0: add        w9, w9, #8
+  0x052738B4: cmp        w9, w10
+  0x052738B8: b.hi       #0x5273768
+  0x052738BC: ldr        x9, [x20]
+  0x052738C0: ldr        x10, [x19, #0x18]
+  0x052738C4: and        x8, x8, #0xffff
+  0x052738C8: str        x10, [x9, x8]
+  0x052738CC: ldrh       w8, [x20, #0xa]
+  0x052738D0: add        w8, w8, #8
+  0x052738D4: strh       w8, [x20, #0xa]
+  0x052738D8: ldr        x21, [x20]
+  0x052738DC: cbnz       x21, #0x52737a0
+  0x052738E0: mov        w8, wzr
+  0x052738E4: strh       w8, [x19]
+  0x052738E8: bl         #0x5c6dbc0  ; PLT_unknown_2
+  0x052738EC: mov        w1, w0
+  0x052738F0: mov        x0, x21
+  0x052738F4: bl         #0x5c6dbb0  ; UNKNOWN_ENCODER (PLT)
+  0x052738F8: ldr        x9, [x20]
+  0x052738FC: cbz        x9, #0x527390c
+  0x05273900: ldrh       w8, [x20, #0xa]
+  0x05273904: strh       w8, [x9]
+  0x05273908: b          #0x5273910
+  0x0527390C: mov        w8, wzr
+  0x05273910: strh       w8, [x19]
+  0x05273914: cmp        x22, #0
+  0x05273918: cset       w0, ne
+  0x0527391C: ldp        x20, x19, [sp, #0x20]
+  0x05273920: ldp        x22, x21, [sp, #0x10]
+  0x05273924: ldp        x29, x30, [sp], #0x30
+  0x05273928: ret        
+
+================================================================================
+  PLT RESOLUTION: 0x05C6DBB0
+================================================================================
+  0x05C6DBB0: adrp       x16, #0x631f000
+  0x05C6DBB4: ldr        x17, [x16, #0xa08]
+  0x05C6DBB8: add        x16, x16, #0xa08
+  0x05C6DBBC: br         x17
+  GOT @ 0x0631FA08 -> 0x0000000005BDC3F0
+
+  REAL FUNCTION at 0x05BDC3F0:
+
+================================================================================
+  PLT 0x5C6DBB0 -> REAL @ 0x05BDC3F0 @ 0x05BDC3F0
+================================================================================
+  0x05BDC3F0: stp        x16, x30, [sp, #-0x10]!
+  0x05BDC3F4: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC3F8: ldr        x17, [x16, #0xe30]
+  0x05BDC3FC: add        x16, x16, #0xe30
+  0x05BDC400: br         x17
+  0x05BDC404: nop        
+  0x05BDC408: nop        
+  0x05BDC40C: nop        
+  0x05BDC410: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC414: ldr        x17, [x16, #0xe38]
+  0x05BDC418: add        x16, x16, #0xe38
+  0x05BDC41C: br         x17
+  0x05BDC420: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC424: ldr        x17, [x16, #0xe40]
+  0x05BDC428: add        x16, x16, #0xe40
+  0x05BDC42C: br         x17
+  0x05BDC430: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC434: ldr        x17, [x16, #0xe48]
+  0x05BDC438: add        x16, x16, #0xe48
+  0x05BDC43C: br         x17
+  0x05BDC440: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC444: ldr        x17, [x16, #0xe50]
+  0x05BDC448: add        x16, x16, #0xe50
+  0x05BDC44C: br         x17
+  0x05BDC450: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC454: ldr        x17, [x16, #0xe58]
+  0x05BDC458: add        x16, x16, #0xe58
+  0x05BDC45C: br         x17
+  0x05BDC460: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC464: ldr        x17, [x16, #0xe60]
+  0x05BDC468: add        x16, x16, #0xe60
+  0x05BDC46C: br         x17
+  0x05BDC470: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC474: ldr        x17, [x16, #0xe68]
+  0x05BDC478: add        x16, x16, #0xe68
+  0x05BDC47C: br         x17
+  0x05BDC480: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC484: ldr        x17, [x16, #0xe70]
+  0x05BDC488: add        x16, x16, #0xe70
+  0x05BDC48C: br         x17
+  0x05BDC490: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC494: ldr        x17, [x16, #0xe78]
+  0x05BDC498: add        x16, x16, #0xe78
+  0x05BDC49C: br         x17
+  0x05BDC4A0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC4A4: ldr        x17, [x16, #0xe80]
+  0x05BDC4A8: add        x16, x16, #0xe80
+  0x05BDC4AC: br         x17
+  0x05BDC4B0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC4B4: ldr        x17, [x16, #0xe88]
+  0x05BDC4B8: add        x16, x16, #0xe88
+  0x05BDC4BC: br         x17
+  0x05BDC4C0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC4C4: ldr        x17, [x16, #0xe90]
+  0x05BDC4C8: add        x16, x16, #0xe90
+  0x05BDC4CC: br         x17
+  0x05BDC4D0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC4D4: ldr        x17, [x16, #0xe98]
+  0x05BDC4D8: add        x16, x16, #0xe98
+  0x05BDC4DC: br         x17
+  0x05BDC4E0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC4E4: ldr        x17, [x16, #0xea0]
+  0x05BDC4E8: add        x16, x16, #0xea0
+  0x05BDC4EC: br         x17
+  0x05BDC4F0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC4F4: ldr        x17, [x16, #0xea8]
+  0x05BDC4F8: add        x16, x16, #0xea8
+  0x05BDC4FC: br         x17
+  0x05BDC500: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC504: ldr        x17, [x16, #0xeb0]
+  0x05BDC508: add        x16, x16, #0xeb0
+  0x05BDC50C: br         x17
+  0x05BDC510: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC514: ldr        x17, [x16, #0xeb8]
+  0x05BDC518: add        x16, x16, #0xeb8
+  0x05BDC51C: br         x17
+  0x05BDC520: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC524: ldr        x17, [x16, #0xec0]
+  0x05BDC528: add        x16, x16, #0xec0
+  0x05BDC52C: br         x17
+  0x05BDC530: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC534: ldr        x17, [x16, #0xec8]
+  0x05BDC538: add        x16, x16, #0xec8
+  0x05BDC53C: br         x17
+  0x05BDC540: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC544: ldr        x17, [x16, #0xed0]
+  0x05BDC548: add        x16, x16, #0xed0
+  0x05BDC54C: br         x17
+  0x05BDC550: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC554: ldr        x17, [x16, #0xed8]
+  0x05BDC558: add        x16, x16, #0xed8
+  0x05BDC55C: br         x17
+  0x05BDC560: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC564: ldr        x17, [x16, #0xee0]
+  0x05BDC568: add        x16, x16, #0xee0
+  0x05BDC56C: br         x17
+  0x05BDC570: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC574: ldr        x17, [x16, #0xee8]
+  0x05BDC578: add        x16, x16, #0xee8
+  0x05BDC57C: br         x17
+  0x05BDC580: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC584: ldr        x17, [x16, #0xef0]
+  0x05BDC588: add        x16, x16, #0xef0
+  0x05BDC58C: br         x17
+  0x05BDC590: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC594: ldr        x17, [x16, #0xef8]
+  0x05BDC598: add        x16, x16, #0xef8
+  0x05BDC59C: br         x17
+  0x05BDC5A0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC5A4: ldr        x17, [x16, #0xf00]
+  0x05BDC5A8: add        x16, x16, #0xf00
+  0x05BDC5AC: br         x17
+  0x05BDC5B0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC5B4: ldr        x17, [x16, #0xf08]
+  0x05BDC5B8: add        x16, x16, #0xf08
+  0x05BDC5BC: br         x17
+  0x05BDC5C0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC5C4: ldr        x17, [x16, #0xf10]
+  0x05BDC5C8: add        x16, x16, #0xf10
+  0x05BDC5CC: br         x17
+  0x05BDC5D0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC5D4: ldr        x17, [x16, #0xf18]
+  0x05BDC5D8: add        x16, x16, #0xf18
+  0x05BDC5DC: br         x17
+  0x05BDC5E0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC5E4: ldr        x17, [x16, #0xf20]
+  0x05BDC5E8: add        x16, x16, #0xf20
+  0x05BDC5EC: br         x17
+  0x05BDC5F0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC5F4: ldr        x17, [x16, #0xf28]
+  0x05BDC5F8: add        x16, x16, #0xf28
+  0x05BDC5FC: br         x17
+  0x05BDC600: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC604: ldr        x17, [x16, #0xf30]
+  0x05BDC608: add        x16, x16, #0xf30
+  0x05BDC60C: br         x17
+  0x05BDC610: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC614: ldr        x17, [x16, #0xf38]
+  0x05BDC618: add        x16, x16, #0xf38
+  0x05BDC61C: br         x17
+  0x05BDC620: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC624: ldr        x17, [x16, #0xf40]
+  0x05BDC628: add        x16, x16, #0xf40
+  0x05BDC62C: br         x17
+  0x05BDC630: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC634: ldr        x17, [x16, #0xf48]
+  0x05BDC638: add        x16, x16, #0xf48
+  0x05BDC63C: br         x17
+  0x05BDC640: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC644: ldr        x17, [x16, #0xf50]
+  0x05BDC648: add        x16, x16, #0xf50
+  0x05BDC64C: br         x17
+  0x05BDC650: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC654: ldr        x17, [x16, #0xf58]
+  0x05BDC658: add        x16, x16, #0xf58
+  0x05BDC65C: br         x17
+  0x05BDC660: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC664: ldr        x17, [x16, #0xf60]
+  0x05BDC668: add        x16, x16, #0xf60
+  0x05BDC66C: br         x17
+  0x05BDC670: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC674: ldr        x17, [x16, #0xf68]
+  0x05BDC678: add        x16, x16, #0xf68
+  0x05BDC67C: br         x17
+  0x05BDC680: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC684: ldr        x17, [x16, #0xf70]
+  0x05BDC688: add        x16, x16, #0xf70
+  0x05BDC68C: br         x17
+  0x05BDC690: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC694: ldr        x17, [x16, #0xf78]
+  0x05BDC698: add        x16, x16, #0xf78
+  0x05BDC69C: br         x17
+  0x05BDC6A0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC6A4: ldr        x17, [x16, #0xf80]
+  0x05BDC6A8: add        x16, x16, #0xf80
+  0x05BDC6AC: br         x17
+  0x05BDC6B0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC6B4: ldr        x17, [x16, #0xf88]
+  0x05BDC6B8: add        x16, x16, #0xf88
+  0x05BDC6BC: br         x17
+  0x05BDC6C0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC6C4: ldr        x17, [x16, #0xf90]
+  0x05BDC6C8: add        x16, x16, #0xf90
+  0x05BDC6CC: br         x17
+  0x05BDC6D0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC6D4: ldr        x17, [x16, #0xf98]
+  0x05BDC6D8: add        x16, x16, #0xf98
+  0x05BDC6DC: br         x17
+  0x05BDC6E0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC6E4: ldr        x17, [x16, #0xfa0]
+  0x05BDC6E8: add        x16, x16, #0xfa0
+  0x05BDC6EC: br         x17
+  0x05BDC6F0: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC6F4: ldr        x17, [x16, #0xfa8]
+  0x05BDC6F8: add        x16, x16, #0xfa8
+  0x05BDC6FC: br         x17
+  0x05BDC700: adrp       x16, #0x62d6000  ; page=0x062D6000
+  0x05BDC704: ldr        x17, [x16, #0xfb0]
+  0x05BDC708: add        x16, x16, #0xfb0
+  0x05BDC70C: br         x17
+
+================================================================================
+  PLT RESOLUTION: 0x05C6DBA0 (CMsgCodec::Encode)
+================================================================================
+  0x05C6DBA0: adrp       x16, #0x631f000
+  0x05C6DBA4: ldr        x17, [x16, #0xa00]
+  0x05C6DBA8: add        x16, x16, #0xa00
+  0x05C6DBAC: br         x17
+  GOT @ 0x0631FA00 -> 0x0000000005BDC3F0
+
+================================================================================
+  LogicPassword::loadLocalPassword @ 0x039FB2C8
+================================================================================
+  0x039FB2C8: sub        sp, sp, #0xb0
+  0x039FB2CC: stp        x29, x30, [sp, #0x70]
+  0x039FB2D0: stp        x24, x23, [sp, #0x80]
+  0x039FB2D4: stp        x22, x21, [sp, #0x90]
+  0x039FB2D8: stp        x20, x19, [sp, #0xa0]
+  0x039FB2DC: add        x29, sp, #0x70
+  0x039FB2E0: mrs        x24, tpidr_el0
+  0x039FB2E4: ldr        x8, [x24, #0x28]
+  0x039FB2E8: stur       x8, [x29, #-8]
+  0x039FB2EC: ldrb       w8, [x0, #0x71]
+  0x039FB2F0: cbz        w8, #0x39fb468
+  0x039FB2F4: mov        x19, x0
+  0x039FB2F8: bl         #0x5bfd4c0
+  0x039FB2FC: adrp       x9, #0x2575000  ; page=0x02575000
+  0x039FB300: add        x9, x9, #0xb10
+  0x039FB304: mov        w8, #0x22
+  0x039FB308: ldr        q0, [x9]
+  0x039FB30C: sturb      w8, [x29, #-0x28]
+  0x039FB310: mov        w8, #0x64
+  0x039FB314: sturh      w8, [x29, #-0x17]
+  0x039FB318: stur       q0, [x29, #-0x27]
+  0x039FB31C: strh       wzr, [sp, #0x10]
+  0x039FB320: add        x8, sp, #0x30
+  0x039FB324: sub        x1, x29, #0x28
+  0x039FB328: add        x2, sp, #0x10
+  0x039FB32C: bl         #0x5bfd4d0
+  0x039FB330: ldrb       w8, [sp, #0x10]
+  0x039FB334: tbz        w8, #0, #0x39fb340
+  0x039FB338: ldr        x0, [sp, #0x20]
+  0x039FB33C: bl         #0x5bdc460  ; operator delete
+  0x039FB340: ldurb      w8, [x29, #-0x28]
+  0x039FB344: tbz        w8, #0, #0x39fb350
+  0x039FB348: ldur       x0, [x29, #-0x18]
+  0x039FB34C: bl         #0x5bdc460  ; operator delete
+  0x039FB350: ldrb       w8, [sp, #0x30]
+  0x039FB354: ldr        x9, [sp, #0x40]
+  0x039FB358: ldr        w10, [sp, #0x38]
+  0x039FB35C: stp        xzr, xzr, [sp, #8]
+  0x039FB360: lsr        x11, x8, #1
+  0x039FB364: tst        w8, #1
+  0x039FB368: add        x8, sp, #0x30
+  0x039FB36C: csinc      x0, x9, x8, ne
+  0x039FB370: stp        xzr, xzr, [sp, #0x18]
+  0x039FB374: csel       w1, w11, w10, eq
+  0x039FB378: add        x2, sp, #8
+  0x039FB37C: bl         #0x5c08970
+  0x039FB380: ldr        x21, [sp, #8]
+  0x039FB384: cbz        x21, #0x39fb3ec
+  0x039FB388: cmn        w0, #8
+  0x039FB38C: b.hs       #0x39fb4e0
+  0x039FB390: sxtw       x20, w0
+  0x039FB394: cmp        w0, #0x17
+  0x039FB398: b.hs       #0x39fb490
+  0x039FB39C: lsl        w8, w0, #1
+  0x039FB3A0: sub        x9, x29, #0x28
+  0x039FB3A4: orr        x22, x9, #1
+  0x039FB3A8: sturb      w8, [x29, #-0x28]
+  0x039FB3AC: cbnz       w0, #0x39fb4c0
+  0x039FB3B0: ldrb       w8, [sp, #0x10]
+  0x039FB3B4: strb       wzr, [x22, x20]
+  0x039FB3B8: tbz        w8, #0, #0x39fb3c4
+  0x039FB3BC: ldr        x0, [sp, #0x20]
+  0x039FB3C0: bl         #0x5bdc460  ; operator delete
+  0x039FB3C4: ldur       q0, [x29, #-0x28]
+  0x039FB3C8: ldur       x8, [x29, #-0x18]
+  0x039FB3CC: ldr        x0, [sp, #8]
+  0x039FB3D0: str        q0, [sp, #0x10]
+  0x039FB3D4: str        x8, [sp, #0x20]
+  0x039FB3D8: bl         #0x5bdc950
+  0x039FB3DC: ldrb       w8, [sp, #0x10]
+  0x039FB3E0: tst        w8, #1
+  0x039FB3E4: cset       w20, eq
+  0x039FB3E8: b          #0x39fb3f0
+  0x039FB3EC: mov        w20, #1
+  0x039FB3F0: adrp       x1, #0x258f000  ; page=0x0258F000
+  0x039FB3F4: add        x1, x1, #0xace
+  0x039FB3F8: add        x0, x19, #0x40
+  0x039FB3FC: bl         #0x5bdd240  ; std::string::assign
+  0x039FB400: sub        x0, x29, #0x28
+  0x039FB404: bl         #0x5c21790  ; CMSG_PASSWORD_CHECK_REQUEST::C1
+  0x039FB408: mov        w2, #0x4240  ; low16 of 1,000,000 (0xF4240)
+  0x039FB40C: add        x1, sp, #0x10
+  0x039FB410: movk       w2, #0xf, lsl #16
+  0x039FB414: bl         #0x5c217a0  ; LogicPassword::encodePassword
+  0x039FB418: stur       x0, [x29, #-0x10]
+  0x039FB41C: bl         #0x5bdca50  ; MessageSubject::singleton
+  0x039FB420: ldr        x8, [x0]
+  0x039FB424: ldr        x8, [x8, #0x50]
+  0x039FB428: blr        x8
+  0x039FB42C: mov        x19, x0
+  0x039FB430: sub        x0, x29, #0x28
+  0x039FB434: mov        x1, x19
+  0x039FB438: bl         #0x5c217b0  ; CMSG_PASSWORD_CHECK_REQUEST::packData
+  0x039FB43C: bl         #0x5bdca50  ; MessageSubject::singleton
+  0x039FB440: ldr        x1, [x19]
+  0x039FB444: ldrh       w2, [x19, #0xa]
+  0x039FB448: bl         #0x5bdcd10  ; MessageSubject::sendMsg
+  0x039FB44C: tbnz       w20, #0, #0x39fb458
+  0x039FB450: ldr        x0, [sp, #0x20]
+  0x039FB454: bl         #0x5bdc460  ; operator delete
+  0x039FB458: ldrb       w8, [sp, #0x30]
+  0x039FB45C: tbz        w8, #0, #0x39fb468
+  0x039FB460: ldr        x0, [sp, #0x40]
+  0x039FB464: bl         #0x5bdc460  ; operator delete
+  0x039FB468: ldr        x8, [x24, #0x28]
+  0x039FB46C: ldur       x9, [x29, #-8]
+  0x039FB470: cmp        x8, x9
+  0x039FB474: b.ne       #0x39fb564
+  0x039FB478: ldp        x20, x19, [sp, #0xa0]
+  0x039FB47C: ldp        x22, x21, [sp, #0x90]
+  0x039FB480: ldp        x24, x23, [sp, #0x80]
+  0x039FB484: ldp        x29, x30, [sp, #0x70]
+  0x039FB488: add        sp, sp, #0xb0
+  0x039FB48C: ret        
+
+================================================================================
+  RODATA STRINGS near password functions
+================================================================================
+  Found at 0x008B9B0E: b'SecondaryPasswordWindowERKNSt6__ndk18fun'
+  Found at 0x009D2941: b'SecondaryPasswordEv\x00_ZZN26SecondaryPassw'
+  Found at 0x009D295B: b'SecondaryPasswordSettingUI10_getDialogEv'
+  Found at 0x009D2994: b'SecondaryPasswordSettingUI11updateStateE'
+  Found at 0x009D29C4: b'SecondaryPasswordUpdateUI10_getDialogEvE'
+  Found at 0x009D29FD: b'SecondaryPasswordResetUI10_getDialogEvE9'
+  Found at 0x009D2A8C: b'SecondaryPasswordUpdateUI11updateStateEv'
+  Found at 0x009D2C97: b'SecondaryPasswordErrorCountEi\x00_ZN13Logic'
+  Found at 0x009D2D09: b'SecondaryPasswordInputUI10_getDialogEvE9'
+  Found at 0x009D2D40: b'SecondaryPasswordInputUI11updateStateEv\x00'
+  Found at 0x009D2EF9: b'SecondaryPasswordResetUI8updateUIEv\x00_ZN1'
+  Found at 0x009D2F35: b'SecondaryPasswordEv\x00_ZN13LogicPassword16'
+  Found at 0x009D30D8: b'SecondaryPasswordERKNSt6__ndk112basic_st'
+  Found at 0x009D3290: b'SecondaryPasswordERKNSt6__ndk112basic_st'
+  Found at 0x009D3301: b'SecondaryPasswordERKNSt6__ndk112basic_st'
+  Found at 0x009D3373: b'SecondaryPasswordERKNSt6__ndk112basic_st'
+  Found at 0x009D33D4: b'SecondaryPasswordInputUI\x00_ZNK13LogicPass'
+  Found at 0x009D3408: b'SecondaryPasswordEv\x00_ZNK13LogicPassword2'
+  Found at 0x009D3436: b'SecondaryPasswordEv\x00_ZN13LogicPassword31'
+  Found at 0x009D3461: b'SecondaryPasswordLengthLimitEv\x00_ZNK13Log'
+  Found at 0x009D349B: b'SecondaryPasswordEntryInMainUIEv\x00_ZNK13L'
+  Found at 0x009D34D7: b'SecondaryPasswordInMainUIEv\x00_ZN13LogicPa'
+  Found at 0x009D350E: b'SecondaryPasswordInMainUIEb\x00_ZNK13LogicP'
+  Found at 0x009D3546: b'SecondaryPasswordERKNSt6__ndk112basic_st'
+  Found at 0x009D35B6: b'SecondaryPasswordEv\x00_ZN13LogicPassword28'
+  Found at 0x009D35E9: b'SecondaryPasswordEv\x00_ZN13LogicPassword22'
+  Found at 0x009D3616: b'SecondaryPasswordEv\x00_ZNK13LogicPassword4'
+  Found at 0x009D3645: b'SecondaryPasswordResetTimeInMainUIEv\x00_ZN'
+  Found at 0x009D3685: b'SecondaryPasswordResetTimeInMainUIEb\x00_ZN'
+  Found at 0x009D36C4: b'SecondaryPasswordERKNSt6__ndk112basic_st'
+  Found at 0x009D3735: b'SecondaryPasswordUIEv\x00_ZTV25SecondaryPas'
+  Found at 0x009D3751: b'SecondaryPasswordUpdateUI\x00_ZTV26Secondar'
+  Found at 0x009D3771: b'SecondaryPasswordSettingUI\x00_ZTV24Seconda'
+  Found at 0x009D3792: b'SecondaryPasswordResetUI\x00_ZNK13LogicPass'
+  Found at 0x009D37C3: b'SecondaryPasswordResetTimeEv\x00_ZN13LogicP'
+  Found at 0x009D37F7: b'SecondaryPasswordLockTimeEv\x00_ZN13LogicPa'
+  Found at 0x009D382A: b'SecondaryPasswordLockCountEv\x00_ZNK13Logic'
+  Found at 0x009D385F: b'SecondaryPasswordErrorCountEv\x00_ZN13Logic'
+  Found at 0x009D3894: b'SecondaryPasswordRoundErrorCountEv\x00_ZNK1'
+  Found at 0x009D38CF: b'SecondaryPasswordUnlockTimeEv\x00_ZNSt6__nd'
+  Found at 0x00DA1DC5: b'SecondaryPasswordEv\x00_ZThn1312_N7CMainUI2'
+  Found at 0x00E2C0C5: b'SecondaryPasswordInputUI12_updateStateEv'
+  Found at 0x00E2C0F3: b'SecondaryPasswordInputUI17_onBindControl'
+  Found at 0x00E2C18D: b'SecondaryPasswordInputUIFvvEJPS3_EEENS_9'
+  Found at 0x00E2C1D0: b'SecondaryPasswordInputUI5_onOKEv\x00_ZN7coc'
+  Found at 0x00E2C22B: b'SecondaryPasswordInputUI12initControlsEv'
+  Found at 0x00E2C259: b'SecondaryPasswordInputUI25_initCustomEve'
+  Found at 0x00E2C294: b'SecondaryPasswordInputUI16handleCustomDa'
+  Found at 0x00E2C2DA: b'SecondaryPasswordInputUI16handleCustomDa'
+  Found at 0x00E2C30E: b'SecondaryPasswordInputUI8initDataERKN4Co'
+  Found at 0x00E2C34B: b'SecondaryPasswordInputUI8initDataEPKv\x00_Z'
+  Found at 0x00E2C376: b'SecondaryPasswordInputUI7onCloseEv\x00_ZN24'
+  Found at 0x00E2C39E: b'SecondaryPasswordInputUI27_reomveCustomE'
+  Found at 0x00E2C3DB: b'SecondaryPasswordInputUI22editBoxEditing'
+  Found at 0x00E2C430: b'SecondaryPasswordInputUI22editBoxEditing'
+  Found at 0x00E2C47D: b'SecondaryPasswordInputUI18editBoxTextCha'
+  Found at 0x00E2C50B: b'SecondaryPasswordInputUI16_editBoxInputE'
+  Found at 0x00E2C55A: b'SecondaryPasswordInputUI18editBoxTextCha'
+  Found at 0x00E2C5E8: b'SecondaryPasswordInputUI13editBoxReturnE'
+  Found at 0x00E2C634: b'SecondaryPasswordInputUI13editBoxReturnE'
+  Found at 0x00E2C678: b'SecondaryPasswordInputUI30editBoxEditing'
+  Found at 0x00E2C6FD: b'SecondaryPasswordInputUI30editBoxEditing'
+  Found at 0x00E2C77A: b'SecondaryPasswordInputUI14_closeKeyboard'
+  Found at 0x00E2C7AA: b'SecondaryPasswordInputUID2Ev\x00_ZTV27Secon'
+  Found at 0x00E2C7CD: b'SecondaryPasswordInputUICsd\x00_ZN24Seconda'
+  Found at 0x00E2C7EE: b'SecondaryPasswordInputUID0Ev\x00_ZN24Second'
+  Found at 0x00E2C810: b'SecondaryPasswordInputUI9getDialogEv\x00_ZT'
+  Found at 0x00E2C841: b'SecondaryPasswordInputUID1Ev\x00_ZThn840_N2'
+  Found at 0x00E2C86A: b'SecondaryPasswordInputUID0Ev\x00_ZThn1312_N'
+  Found at 0x00E2C894: b'SecondaryPasswordInputUID1Ev\x00_ZThn1312_N'
+  Found at 0x00E2C8BE: b'SecondaryPasswordInputUID0Ev\x00_ZThn1608_N'
+  Found at 0x00E2C8E8: b'SecondaryPasswordInputUID1Ev\x00_ZThn1608_N'
+  Found at 0x00E2C912: b'SecondaryPasswordInputUID0Ev\x00_ZThn1840_N'
+  Found at 0x00E2C93C: b'SecondaryPasswordInputUID1Ev\x00_ZThn1840_N'
+  Found at 0x00E2C966: b'SecondaryPasswordInputUID0Ev\x00_ZNSt6__ndk'
+  Found at 0x00E2C9B1: b'SecondaryPasswordInputUIFvvEJPS3_EEENS_9'
+  Found at 0x00E2CA0B: b'SecondaryPasswordInputUIFvvEJPS1_EEE\x00_ZT'
+  Found at 0x00E2CA49: b'SecondaryPasswordInputUIFvvEJPS1_EEE\x00_ZT'
+  Found at 0x00E2CA74: b'SecondaryPasswordInputUI\x00_ZN27SecondaryP'
+  Found at 0x00E2CA92: b'SecondaryPasswordInputUICsd13getUIFilePa'
+  Found at 0x00E2CAC4: b'SecondaryPasswordInputUICsd14bindControl'
+  Found at 0x00E2CB9C: b'SecondaryPasswordInputUI\x00_ZTI27Secondary'
+  Found at 0x00E2CBBB: b'SecondaryPasswordInputUICsd\x00_ZTINSt6__nd'
+  Found at 0x00E2CC07: b'SecondaryPasswordInputUIFvvEJPS3_EEENS_9'
+  Found at 0x00E2CC75: b'SecondaryPasswordInputUIFvvEJPS3_EEENS_9'
+  Found at 0x00E2CCD9: b'SecondaryPasswordInputUIFvvEEE\x00_ZTSNSt6_'
+  Found at 0x00E2CD1A: b'SecondaryPasswordInputUIvEE\x00_ZTINSt6__nd'
+  Found at 0x00E2CD58: b'SecondaryPasswordInputUIvEE\x00_ZTINSt6__nd'
+  Found at 0x00E2CD9A: b'SecondaryPasswordInputUIFvvEEE\x00_ZN27Seco'
+  Found at 0x00E2CDBE: b'SecondaryPasswordInputUICsdD2Ev\x00_ZN27Sec'
+  Found at 0x00E2CDE3: b'SecondaryPasswordInputUICsdD0Ev\x00_ZN27Sec'
+  Found at 0x00E2CE08: b'SecondaryPasswordInputUICsd17_onBindCont'
+  Found at 0x00E2CE81: b'SecondaryPasswordInputUICsdD1Ev\x00_ZThn840'
+  Found at 0x00E2CEAD: b'SecondaryPasswordInputUICsdD0Ev\x00_ZThn131'
+  Found at 0x00E2CEDA: b'SecondaryPasswordInputUICsdD1Ev\x00_ZThn131'
+  Found at 0x00E2CF07: b'SecondaryPasswordInputUICsdD0Ev\x00_ZThn160'
+  Found at 0x00E2CF34: b'SecondaryPasswordInputUICsdD1Ev\x00_ZThn160'
+  Found at 0x00E2CF61: b'SecondaryPasswordInputUICsdD0Ev\x00_ZTS27Se'
+  Found at 0x00E2CF87: b'SecondaryPasswordInputUICsd\x00_ZN24Seconda'
+  Found at 0x00E2CFA8: b'SecondaryPasswordResetUI12_updateStateEv'
+  Found at 0x00E2CFD6: b'SecondaryPasswordResetUI17_onBindControl'
+  Found at 0x00E2D070: b'SecondaryPasswordResetUIFvvEJPS3_EEENS_9'
+  Found at 0x00E2D0B3: b'SecondaryPasswordResetUI14_onToggleCheck'
+  Found at 0x00E2D0E3: b'SecondaryPasswordResetUI9_onCancelEv\x00_ZN'
+  Found at 0x00E2D10D: b'SecondaryPasswordResetUI7_onBackEv\x00_ZN24'
+  Found at 0x00E2D135: b'SecondaryPasswordResetUI5_onOkEv\x00_ZN24Se'
+  Found at 0x00E2D15B: b'SecondaryPasswordResetUI12initControlsEv'
+  Found at 0x00E2D189: b'SecondaryPasswordResetUI25_initCustomEve'
+  Found at 0x00E2D1C4: b'SecondaryPasswordResetUI16handleCustomDa'
+  Found at 0x00E2D20A: b'SecondaryPasswordResetUI16handleCustomDa'
+  Found at 0x00E2D23E: b'SecondaryPasswordResetUI8initDataERKN4Co'
+  Found at 0x00E2D27B: b'SecondaryPasswordResetUI8initDataEPKv\x00_Z'
+  Found at 0x00E2D2A6: b'SecondaryPasswordResetUI7onCloseEv\x00_ZN24'
+  Found at 0x00E2D2CE: b'SecondaryPasswordResetUI27_reomveCustomE'
+  Found at 0x00E2D30B: b'SecondaryPasswordResetUID2Ev\x00_ZTV27Secon'
+  Found at 0x00E2D32E: b'SecondaryPasswordResetUICsd\x00_ZN24Seconda'
+  Found at 0x00E2D34F: b'SecondaryPasswordResetUID0Ev\x00_ZN24Second'
+  Found at 0x00E2D371: b'SecondaryPasswordResetUI9getDialogEv\x00_ZT'
+  Found at 0x00E2D3A2: b'SecondaryPasswordResetUID1Ev\x00_ZThn840_N2'
+  Found at 0x00E2D3CB: b'SecondaryPasswordResetUID0Ev\x00_ZThn1312_N'
+  Found at 0x00E2D3F5: b'SecondaryPasswordResetUID1Ev\x00_ZThn1312_N'
+  Found at 0x00E2D41F: b'SecondaryPasswordResetUID0Ev\x00_ZThn1608_N'
+  Found at 0x00E2D449: b'SecondaryPasswordResetUID1Ev\x00_ZThn1608_N'
+  Found at 0x00E2D473: b'SecondaryPasswordResetUID0Ev\x00_ZNSt6__ndk'
+  Found at 0x00E2D4BE: b'SecondaryPasswordResetUIFvvEJPS3_EEENS_9'
+  Found at 0x00E2D518: b'SecondaryPasswordResetUIFvvEJPS1_EEE\x00_ZT'
+  Found at 0x00E2D556: b'SecondaryPasswordResetUIFvvEJPS1_EEE\x00_ZT'
+  Found at 0x00E2D581: b'SecondaryPasswordResetUI\x00_ZN27SecondaryP'
+  Found at 0x00E2D59F: b'SecondaryPasswordResetUICsd13getUIFilePa'
+  Found at 0x00E2D5D1: b'SecondaryPasswordResetUICsd14bindControl'
+  Found at 0x00E2D6A9: b'SecondaryPasswordResetUI\x00_ZTI27Secondary'
+  Found at 0x00E2D6C8: b'SecondaryPasswordResetUICsd\x00_ZTINSt6__nd'
+  Found at 0x00E2D714: b'SecondaryPasswordResetUIFvvEJPS3_EEENS_9'
+  Found at 0x00E2D782: b'SecondaryPasswordResetUIFvvEJPS3_EEENS_9'
+  Found at 0x00E2D7E6: b'SecondaryPasswordResetUIFvvEEE\x00_ZTSNSt6_'
+  Found at 0x00E2D827: b'SecondaryPasswordResetUIvEE\x00_ZTINSt6__nd'
+  Found at 0x00E2D865: b'SecondaryPasswordResetUIvEE\x00_ZTINSt6__nd'
+  Found at 0x00E2D8A7: b'SecondaryPasswordResetUIFvvEEE\x00_ZN27Seco'
+  Found at 0x00E2D8CB: b'SecondaryPasswordResetUICsdD2Ev\x00_ZN27Sec'
+  Found at 0x00E2D8F0: b'SecondaryPasswordResetUICsdD0Ev\x00_ZN27Sec'
+  Found at 0x00E2D915: b'SecondaryPasswordResetUICsd17_onBindCont'
+  Found at 0x00E2D98E: b'SecondaryPasswordResetUICsdD1Ev\x00_ZThn840'
+  Found at 0x00E2D9BA: b'SecondaryPasswordResetUICsdD0Ev\x00_ZThn131'
+  Found at 0x00E2D9E7: b'SecondaryPasswordResetUICsdD1Ev\x00_ZThn131'
+  Found at 0x00E2DA14: b'SecondaryPasswordResetUICsdD0Ev\x00_ZThn160'
+  Found at 0x00E2DA41: b'SecondaryPasswordResetUICsdD1Ev\x00_ZThn160'
+  Found at 0x00E2DA6E: b'SecondaryPasswordResetUICsdD0Ev\x00_ZTS27Se'
+  Found at 0x00E2DA94: b'SecondaryPasswordResetUICsd\x00_ZN26Seconda'
+  Found at 0x00E2DAB5: b'SecondaryPasswordSettingUI17_onBindContr'
+  Found at 0x00E2DB51: b'SecondaryPasswordSettingUIFvvEJPS3_EEENS'
+  Found at 0x00E2DB96: b'SecondaryPasswordSettingUI13_onToggleSho'
+  Found at 0x00E2DBC7: b'SecondaryPasswordSettingUI14_onSetPasswo'
+  Found at 0x00E2DBF9: b'SecondaryPasswordSettingUI17_updateLabel'
+  Found at 0x00E2DC2E: b'SecondaryPasswordSettingUI12initControls'
+  Found at 0x00E2DC5E: b'SecondaryPasswordSettingUI25_initCustomE'
+  Found at 0x00E2DC9B: b'SecondaryPasswordSettingUI18_updateToggl'
+  Found at 0x00E2DCD1: b'SecondaryPasswordSettingUI16handleCustom'
+  Found at 0x00E2DD19: b'SecondaryPasswordSettingUI16handleCustom'
+  Found at 0x00E2DD4F: b'SecondaryPasswordSettingUI8initDataERKN4'
+  Found at 0x00E2DD8E: b'SecondaryPasswordSettingUI8initDataEPKv\x00'
+  Found at 0x00E2DDBB: b'SecondaryPasswordSettingUI7onCloseEv\x00_ZN'
+  Found at 0x00E2DDE5: b'SecondaryPasswordSettingUI27_reomveCusto'
+  Found at 0x00E2DE24: b'SecondaryPasswordSettingUI22editBoxEditi'
+  Found at 0x00E2DE7B: b'SecondaryPasswordSettingUI22editBoxEditi'
+  Found at 0x00E2DECA: b'SecondaryPasswordSettingUI18editBoxTextC'
+  Found at 0x00E2DF5A: b'SecondaryPasswordSettingUI16_editBoxInpu'
+  Found at 0x00E2DFAB: b'SecondaryPasswordSettingUI18editBoxTextC'
+  Found at 0x00E2E03B: b'SecondaryPasswordSettingUI13editBoxRetur'
+  Found at 0x00E2E089: b'SecondaryPasswordSettingUI13editBoxRetur'
+  Found at 0x00E2E0CF: b'SecondaryPasswordSettingUI30editBoxEditi'
+  Found at 0x00E2E156: b'SecondaryPasswordSettingUI30editBoxEditi'
+  Found at 0x00E2E1D5: b'SecondaryPasswordSettingUI14_closeKeyboa'
+  Found at 0x00E2E207: b'SecondaryPasswordSettingUID2Ev\x00_ZN29Seco'
+  Found at 0x00E2E22B: b'SecondaryPasswordSettingUICsdD2Ev\x00_ZN26S'
+  Found at 0x00E2E252: b'SecondaryPasswordSettingUID0Ev\x00_ZN26Seco'
+  Found at 0x00E2E276: b'SecondaryPasswordSettingUI9getDialogEv\x00_'
+  Found at 0x00E2E2A9: b'SecondaryPasswordSettingUID1Ev\x00_ZThn840_'
+  Found at 0x00E2E2D4: b'SecondaryPasswordSettingUID0Ev\x00_ZThn1312'
+  Found at 0x00E2E300: b'SecondaryPasswordSettingUID1Ev\x00_ZThn1312'
+  Found at 0x00E2E32C: b'SecondaryPasswordSettingUID0Ev\x00_ZThn1608'
+  Found at 0x00E2E358: b'SecondaryPasswordSettingUID1Ev\x00_ZThn1608'
+  Found at 0x00E2E384: b'SecondaryPasswordSettingUID0Ev\x00_ZThn2048'
+  Found at 0x00E2E3B0: b'SecondaryPasswordSettingUID1Ev\x00_ZThn2048'
+  Found at 0x00E2E3DC: b'SecondaryPasswordSettingUID0Ev\x00_ZTV29Sec'
+  Found at 0x00E2E401: b'SecondaryPasswordSettingUICsd\x00_ZNSt6__nd'
+  Found at 0x00E2E44D: b'SecondaryPasswordSettingUIFvvEJPS3_EEENS'
+  Found at 0x00E2E4A9: b'SecondaryPasswordSettingUIFvvEJPS1_EEE\x00_'
+  Found at 0x00E2E4E9: b'SecondaryPasswordSettingUIFvvEJPS1_EEE\x00_'
+  Found at 0x00E2E516: b'SecondaryPasswordSettingUI\x00_ZN29Secondar'
+  Found at 0x00E2E536: b'SecondaryPasswordSettingUICsd13getUIFile'
+  Found at 0x00E2E56A: b'SecondaryPasswordSettingUICsd14bindContr'
+  Found at 0x00E2E644: b'SecondaryPasswordSettingUI\x00_ZTI29Seconda'
+  Found at 0x00E2E665: b'SecondaryPasswordSettingUICsd\x00_ZTINSt6__'
+  Found at 0x00E2E6B3: b'SecondaryPasswordSettingUIFvvEJPS3_EEENS'
+  Found at 0x00E2E723: b'SecondaryPasswordSettingUIFvvEJPS3_EEENS'
+  Found at 0x00E2E789: b'SecondaryPasswordSettingUIFvvEEE\x00_ZTSNSt'
+  Found at 0x00E2E7CC: b'SecondaryPasswordSettingUIvEE\x00_ZTINSt6__'
+  Found at 0x00E2E80C: b'SecondaryPasswordSettingUIvEE\x00_ZTINSt6__'
+  Found at 0x00E2E850: b'SecondaryPasswordSettingUIFvvEEE\x00_ZN29Se'
+  Found at 0x00E2E876: b'SecondaryPasswordSettingUICsdD0Ev\x00_ZN29S'
+  Found at 0x00E2E89D: b'SecondaryPasswordSettingUICsd17_onBindCo'
+  Found at 0x00E2E918: b'SecondaryPasswordSettingUICsdD1Ev\x00_ZThn8'
+  Found at 0x00E2E946: b'SecondaryPasswordSettingUICsdD0Ev\x00_ZThn1'
+  Found at 0x00E2E975: b'SecondaryPasswordSettingUICsdD1Ev\x00_ZThn1'
+  Found at 0x00E2E9A4: b'SecondaryPasswordSettingUICsdD0Ev\x00_ZThn1'
+  Found at 0x00E2E9D3: b'SecondaryPasswordSettingUICsdD1Ev\x00_ZThn1'
+  Found at 0x00E2EA02: b'SecondaryPasswordSettingUICsdD0Ev\x00_ZTS29'
+  Found at 0x00E2EA2A: b'SecondaryPasswordSettingUICsd\x00_ZN25Secon'
+  Found at 0x00E2EA4D: b'SecondaryPasswordUpdateUI13_fillPassword'
+  Found at 0x00E2EA7D: b'SecondaryPasswordUpdateUI16_updateResetT'
+  Found at 0x00E2EAB0: b'SecondaryPasswordUpdateUI17_updateLabelS'
+  Found at 0x00E2EAE4: b'SecondaryPasswordUpdateUI17_onBindContro'
+  Found at 0x00E2EB7F: b'SecondaryPasswordUpdateUIFvvEJPS3_EEENS_'
+  Found at 0x00E2EBC3: b'SecondaryPasswordUpdateUI13_savePassword'
+  Found at 0x00E2EBF3: b'SecondaryPasswordUpdateUI12initControlsE'
+  Found at 0x00E2EC22: b'SecondaryPasswordUpdateUI25_initCustomEv'
+  Found at 0x00E2EC5E: b'SecondaryPasswordUpdateUI16handleCustomD'
+  Found at 0x00E2ECA5: b'SecondaryPasswordUpdateUI16handleCustomD'
+  Found at 0x00E2ECDA: b'SecondaryPasswordUpdateUI8initDataERKN4C'
+  Found at 0x00E2ED18: b'SecondaryPasswordUpdateUI8initDataEPKv\x00_'
+  Found at 0x00E2ED44: b'SecondaryPasswordUpdateUI7onCloseEv\x00_ZN2'
+  Found at 0x00E2ED6D: b'SecondaryPasswordUpdateUI27_reomveCustom'
+  Found at 0x00E2EDAB: b'SecondaryPasswordUpdateUI22editBoxEditin'
+  Found at 0x00E2EE01: b'SecondaryPasswordUpdateUI22editBoxEditin'
+  Found at 0x00E2EE4F: b'SecondaryPasswordUpdateUI18editBoxTextCh'
+  Found at 0x00E2EEDE: b'SecondaryPasswordUpdateUI16_editBoxInput'
+  Found at 0x00E2EF2E: b'SecondaryPasswordUpdateUI18editBoxTextCh'
+  Found at 0x00E2EFBD: b'SecondaryPasswordUpdateUI13editBoxReturn'
+  Found at 0x00E2F00A: b'SecondaryPasswordUpdateUI13editBoxReturn'
+  Found at 0x00E2F04F: b'SecondaryPasswordUpdateUI30editBoxEditin'
+  Found at 0x00E2F0D5: b'SecondaryPasswordUpdateUI30editBoxEditin'
+  Found at 0x00E2F153: b'SecondaryPasswordUpdateUI14_closeKeyboar'
+  Found at 0x00E2F184: b'SecondaryPasswordUpdateUID2Ev\x00_ZN28Secon'
+  Found at 0x00E2F1A7: b'SecondaryPasswordUpdateUICsdD2Ev\x00_ZN25Se'
+  Found at 0x00E2F1CD: b'SecondaryPasswordUpdateUID0Ev\x00_ZN25Secon'
+  Found at 0x00E2F1F0: b'SecondaryPasswordUpdateUI9getDialogEv\x00_Z'
+  Found at 0x00E2F222: b'SecondaryPasswordUpdateUID1Ev\x00_ZThn840_N'
+  Found at 0x00E2F24C: b'SecondaryPasswordUpdateUID0Ev\x00_ZThn1312_'
+  Found at 0x00E2F277: b'SecondaryPasswordUpdateUID1Ev\x00_ZThn1312_'
+  Found at 0x00E2F2A2: b'SecondaryPasswordUpdateUID0Ev\x00_ZThn1608_'
+  Found at 0x00E2F2CD: b'SecondaryPasswordUpdateUID1Ev\x00_ZThn1608_'
+  Found at 0x00E2F2F8: b'SecondaryPasswordUpdateUID0Ev\x00_ZThn2024_'
+  Found at 0x00E2F323: b'SecondaryPasswordUpdateUID1Ev\x00_ZThn2024_'
+  Found at 0x00E2F34E: b'SecondaryPasswordUpdateUID0Ev\x00_ZTV28Seco'
+  Found at 0x00E2F372: b'SecondaryPasswordUpdateUICsd\x00_ZNSt6__ndk'
+  Found at 0x00E2F3BD: b'SecondaryPasswordUpdateUIFvvEJPS3_EEENS_'
+  Found at 0x00E2F418: b'SecondaryPasswordUpdateUIFvvEJPS1_EEE\x00_Z'
+  Found at 0x00E2F457: b'SecondaryPasswordUpdateUIFvvEJPS1_EEE\x00_Z'
+  Found at 0x00E2F483: b'SecondaryPasswordUpdateUI\x00_ZN28Secondary'
+  Found at 0x00E2F4A2: b'SecondaryPasswordUpdateUICsd13getUIFileP'
+  Found at 0x00E2F4D5: b'SecondaryPasswordUpdateUICsd14bindContro'
+  Found at 0x00E2F5AE: b'SecondaryPasswordUpdateUI\x00_ZTI28Secondar'
+  Found at 0x00E2F5CE: b'SecondaryPasswordUpdateUICsd\x00_ZTINSt6__n'
+  Found at 0x00E2F61B: b'SecondaryPasswordUpdateUIFvvEJPS3_EEENS_'
+  Found at 0x00E2F68A: b'SecondaryPasswordUpdateUIFvvEJPS3_EEENS_'
+  Found at 0x00E2F6EF: b'SecondaryPasswordUpdateUIFvvEEE\x00_ZTSNSt6'
+  Found at 0x00E2F731: b'SecondaryPasswordUpdateUIvEE\x00_ZTINSt6__n'
+  Found at 0x00E2F770: b'SecondaryPasswordUpdateUIvEE\x00_ZTINSt6__n'
+  Found at 0x00E2F7B3: b'SecondaryPasswordUpdateUIFvvEEE\x00_ZN28Sec'
+  Found at 0x00E2F7D8: b'SecondaryPasswordUpdateUICsdD0Ev\x00_ZN28Se'
+  Found at 0x00E2F7FE: b'SecondaryPasswordUpdateUICsd17_onBindCon'
+  Found at 0x00E2F878: b'SecondaryPasswordUpdateUICsdD1Ev\x00_ZThn84'
+  Found at 0x00E2F8A5: b'SecondaryPasswordUpdateUICsdD0Ev\x00_ZThn13'
+  Found at 0x00E2F8D3: b'SecondaryPasswordUpdateUICsdD1Ev\x00_ZThn13'
+  Found at 0x00E2F901: b'SecondaryPasswordUpdateUICsdD0Ev\x00_ZThn16'
+  Found at 0x00E2F92F: b'SecondaryPasswordUpdateUICsdD1Ev\x00_ZThn16'
+  Found at 0x00E2F95D: b'SecondaryPasswordUpdateUICsdD0Ev\x00_ZTS28S'
+  Found at 0x00E2F984: b'SecondaryPasswordUpdateUICsd\x00_ZN9CSeting'
+  Found at 0x00E2FC4E: b'SecondaryPasswordEv\x00_ZN9CSetingUI13getUI'
+  Found at 0x00E2FEF5: b'SecondaryPasswordEv\x00_ZN9CSetingUI18onBtn'
+  Found at 0x02575B10: b'SecondaryPassword\x00ePLAYER_ATTR_CHANGE_RE'
+  Found at 0x0261E2AE: b'SecondaryPasswordShowInMainUI\x00nLordValue'
+  Found at 0x02891D75: b'SecondaryPasswordInputUI\x00NSt6__ndk110__f'
+  Found at 0x02891DB0: b'SecondaryPasswordInputUI17_onBindControl'
+  Found at 0x02891E34: b'SecondaryPasswordInputUI17_onBindControl'
+  Found at 0x02891ECF: b'SecondaryPasswordInputUIFvvEJPS3_EEENS_9'
+  Found at 0x02891F22: b'SecondaryPasswordInputUIFvvEJPS1_EEE\x00NSt'
+  Found at 0x02891F69: b'SecondaryPasswordInputUIFvvEEE\x00NSt6__ndk'
+  Found at 0x02891FA6: b'SecondaryPasswordInputUIvEE\x00NSt6__ndk110'
+  Found at 0x02891FE4: b'SecondaryPasswordInputUI17_onBindControl'
+  Found at 0x02892068: b'SecondaryPasswordInputUI17_onBindControl'
+  Found at 0x028920F9: b'SecondaryPasswordInputUI5_onOKEvE3$_0NS_'
+  Found at 0x0289213C: b'SecondaryPasswordInputUI5_onOKEvE3$_0\x00NS'
+  Found at 0x02892184: b'SecondaryPasswordInputUI12_updateStateEv'
+  Found at 0x028921CF: b'SecondaryPasswordInputUI12_updateStateEv'
+  Found at 0x028921FF: b'SecondaryPasswordInputUICsd\x00NSt6__ndk110'
+  Found at 0x0289223D: b'SecondaryPasswordInputUICsd14bindControl'
+  Found at 0x02892327: b'SecondaryPasswordInputUICsd14bindControl'
+  Found at 0x02892400: b'SecondaryPasswordResetUI\x00NSt6__ndk110__f'
+  Found at 0x02892445: b'SecondaryPasswordResetUIFvvEJPS3_EEENS_9'
+  Found at 0x02892498: b'SecondaryPasswordResetUIFvvEJPS1_EEE\x00NSt'
+  Found at 0x028924DF: b'SecondaryPasswordResetUIFvvEEE\x00NSt6__ndk'
+  Found at 0x0289251C: b'SecondaryPasswordResetUIvEE\x00NSt6__ndk110'
+  Found at 0x0289255A: b'SecondaryPasswordResetUI17_onBindControl'
+  Found at 0x028925DE: b'SecondaryPasswordResetUI17_onBindControl'
+  Found at 0x0289266F: b'SecondaryPasswordResetUI9_onCancelEvE3$_'
+  Found at 0x028926C9: b'SecondaryPasswordResetUI9_onCancelEvE3$_'
+  Found at 0x02892715: b'SecondaryPasswordResetUI5_onOkEvE3$_0NS_'
+  Found at 0x0289276B: b'SecondaryPasswordResetUI5_onOkEvE3$_0\x00NS'
+  Found at 0x028927B3: b'SecondaryPasswordResetUI12_updateStateEv'
+  Found at 0x028927FE: b'SecondaryPasswordResetUI12_updateStateEv'
+  Found at 0x0289282E: b'SecondaryPasswordResetUICsd\x0026SecondaryP'
+  Found at 0x0289284C: b'SecondaryPasswordSettingUI\x00NSt6__ndk110_'
+  Found at 0x02892889: b'SecondaryPasswordSettingUI17_onBindContr'
+  Found at 0x0289290F: b'SecondaryPasswordSettingUI17_onBindContr'
+  Found at 0x028929A2: b'SecondaryPasswordSettingUI17_onBindContr'
+  Found at 0x02892A28: b'SecondaryPasswordSettingUI17_onBindContr'
+  Found at 0x02892AC5: b'SecondaryPasswordSettingUIFvvEJPS3_EEENS'
+  Found at 0x02892B1A: b'SecondaryPasswordSettingUIFvvEJPS1_EEE\x00N'
+  Found at 0x02892B63: b'SecondaryPasswordSettingUIFvvEEE\x00NSt6__n'
+  Found at 0x02892BA2: b'SecondaryPasswordSettingUIvEE\x0029Secondar'
+  Found at 0x02892BC2: b'SecondaryPasswordSettingUICsd\x00NSt6__ndk1'
+  Found at 0x02892C02: b'SecondaryPasswordSettingUICsd14bindContr'
+  Found at 0x02892CEE: b'SecondaryPasswordSettingUICsd14bindContr'
+  Found at 0x02892DE9: b'SecondaryPasswordSettingUICsd14bindContr'
+  Found at 0x02892ED5: b'SecondaryPasswordSettingUICsd14bindContr'
+  Found at 0x02892FB0: b'SecondaryPasswordUpdateUI\x00NSt6__ndk110__'
+  Found at 0x02892FEC: b'SecondaryPasswordUpdateUI17_onBindContro'
+  Found at 0x02893071: b'SecondaryPasswordUpdateUI17_onBindContro'
+  Found at 0x0289310D: b'SecondaryPasswordUpdateUIFvvEJPS3_EEENS_'
+  Found at 0x02893161: b'SecondaryPasswordUpdateUIFvvEJPS1_EEE\x00NS'
+  Found at 0x028931A9: b'SecondaryPasswordUpdateUIFvvEEE\x00NSt6__nd'
+  Found at 0x028931E7: b'SecondaryPasswordUpdateUIvEE\x00NSt6__ndk11'
+  Found at 0x02893226: b'SecondaryPasswordUpdateUI17_onBindContro'
+  Found at 0x028932AB: b'SecondaryPasswordUpdateUI17_onBindContro'
+  Found at 0x0289333D: b'SecondaryPasswordUpdateUI17_onBindContro'
+  Found at 0x028933C2: b'SecondaryPasswordUpdateUI17_onBindContro'
+  Found at 0x02893454: b'SecondaryPasswordUpdateUI13_savePassword'
+  Found at 0x028934A1: b'SecondaryPasswordUpdateUI13_savePassword'
+  Found at 0x028934F3: b'SecondaryPasswordUpdateUI17_updateLabelS'
+  Found at 0x02893544: b'SecondaryPasswordUpdateUI17_updateLabelS'
+  Found at 0x0289359A: b'SecondaryPasswordUpdateUI16_updateResetT'
+  Found at 0x028935EA: b'SecondaryPasswordUpdateUI16_updateResetT'
+  Found at 0x0289361F: b'SecondaryPasswordUpdateUICsd\x00NSt6__ndk11'
+  Found at 0x0289365E: b'SecondaryPasswordUpdateUICsd14bindContro'
+  Found at 0x02893749: b'SecondaryPasswordUpdateUICsd14bindContro'
+  Found at 0x02893843: b'SecondaryPasswordUpdateUICsd14bindContro'
+  Found at 0x0289392E: b'SecondaryPasswordUpdateUICsd14bindContro'
+  Found at 0x02893A28: b'SecondaryPasswordUpdateUICsd14bindContro'
+  Found at 0x02893B13: b'SecondaryPasswordUpdateUICsd14bindContro'
+  '%d' at 0x02294D14: b'\x02\x04\x00\x00%d\x02\x00\x00\x00\x00\x00\x00\x00\x00\x00@?.\x06\x00\x00\x00\x00\x02\x04'
+  '%d' at 0x02332934: b'\x02\x04\x00\x00%d\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\xa0\x881\x06\x00\x00\x00\x00\x02\x04'
+  '%d' at 0x023CB65B: b'\x00\xff\xff\x01%d\x08\xd8\x02\x00l`\x00\x00\xcc\x01\x08\xb4\x02\x00\xd4\x01P\x00\x00\xa4'
+  '%d' at 0x023DB479: b'\xb84\x00\xa0%d\x00\x00\x84&\x10\xb46\x00\x98&\x10\xd45\x00\xac&\x0c\xb85\x00'
+  '%d' at 0x023F8809: b"\x9c\\\x00\xd4%d\x00\x00\xb8&\x0c\xd8_\x00\xc4&\xb4\x01\x00\x00\xf8'\x0c\xd4_\x00"
+  'password' at 0x02564DED: b'ary_password_input.csb\x00second_'
+  'password' at 0x0256BFBD: b'ype\x00passwordEnable\x00Need a defi'
+  'password' at 0x0256DB23: b'PEM password callback wrapper\x00'
+  'password' at 0x025A63A0: b'ary_password_reset.csb\x00second_'
+  'password' at 0x025B550D: b'\x00no password\x00unable to finaliz'
+  'Password' at 0x02568401: b'rgetPassword\x00(Ljava/lang/Strin'
+  'Password' at 0x0256D60B: b'\x00id-PasswordBasedMAC\x00gost89-cn'
+  'Password' at 0x02571704: b'ieldPassword\x00m_pTextFieldPassw'
+  'Password' at 0x02571719: b'ieldPasswordRetry\x00m_pTextSyste'
+  'Password' at 0x02575B19: b'daryPassword\x00ePLAYER_ATTR_CHAN'
+
+================================================================================
+  CMsgCodec::Encode (REAL at 0x04F97C24) @ 0x04F97C24
+================================================================================
+  0x04F97C24: sub        sp, sp, #0x30
+  0x04F97C28: stp        x29, x30, [sp, #0x10]
+  0x04F97C2C: stp        x20, x19, [sp, #0x20]
+  0x04F97C30: add        x29, sp, #0x10
+  0x04F97C34: mrs        x19, tpidr_el0
+  0x04F97C38: ldr        x8, [x19, #0x28]
+  0x04F97C3C: str        x8, [sp, #8]
+  0x04F97C40: str        w1, [sp, #4]
+  0x04F97C44: cbz        x0, #0x4f97d1c
+  0x04F97C48: ldrh       w8, [x0]
+  0x04F97C4C: cmp        w8, #9
+  0x04F97C50: b.lo       #0x4f97d18
+  0x04F97C54: mov        x20, x0
+  0x04F97C58: bl         #0x5bde0b0
+  0x04F97C5C: ldrh       w9, [x20]
+  0x04F97C60: mov        x8, x20
+  0x04F97C64: str        w0, [sp]
+  0x04F97C68: cmp        w9, #9
+  0x04F97C6C: mov        w9, wzr
+  0x04F97C70: b.lo       #0x4f97cf4
+  0x04F97C74: mov        w10, #8
+  0x04F97C78: mov        w11, #0x2493
+  0x04F97C7C: adrp       x12, #0x28b7000  ; page=0x028B7000
+  0x04F97C80: add        x12, x12, #0x23a
+  0x04F97C84: and        w13, w10, #0xffff
+  0x04F97C88: add        x15, sp, #4
+  0x04F97C8C: ldrb       w16, [x8, x10]
+  0x04F97C90: mul        w13, w13, w11
+  0x04F97C94: bfxil      x15, x10, #0, #2
+  0x04F97C98: ldrb       w15, [x15]
+  0x04F97C9C: lsr        w13, w13, #0x10
+  0x04F97CA0: sub        w14, w10, w13
+  0x04F97CA4: and        w14, w14, #0xfffe
+  0x04F97CA8: add        w13, w13, w14, lsr #1
+  0x04F97CAC: mov        x14, sp
+  0x04F97CB0: bfxil      x14, x10, #0, #1
+  0x04F97CB4: lsr        w13, w13, #2
+  0x04F97CB8: ldrb       w14, [x14]
+  0x04F97CBC: sub        w13, w13, w13, lsl #3
+  0x04F97CC0: add        w14, w14, w14, lsl #4
+  0x04F97CC4: add        w13, w10, w13
+  0x04F97CC8: and        x13, x13, #0xffff
+  0x04F97CCC: add        w14, w14, w16
+  0x04F97CD0: ldrb       w13, [x12, x13]
+  0x04F97CD4: eor        w14, w14, w15
+  0x04F97CD8: eor        w13, w14, w13
+  0x04F97CDC: strb       w13, [x8, x10]
+  0x04F97CE0: add        x10, x10, #1
+  0x04F97CE4: ldrh       w14, [x8]
+  0x04F97CE8: add        w9, w13, w9
+  0x04F97CEC: cmp        x10, x14
+  0x04F97CF0: b.lo       #0x4f97c84
+  0x04F97CF4: mov        w10, #0xb7  ; 0xB7 verify XOR constant
+  0x04F97CF8: strb       w9, [x8, #4]
+  0x04F97CFC: lsr        w9, w0, #8
+  0x04F97D00: strb       w0, [x8, #5]
+  0x04F97D04: eor        w10, w0, w10
+  0x04F97D08: mov        w0, #1
+  0x04F97D0C: strb       w10, [x8, #6]
+  0x04F97D10: strb       w9, [x8, #7]
+  0x04F97D14: b          #0x4f97d1c
+  0x04F97D18: mov        w0, wzr
+  0x04F97D1C: ldr        x8, [x19, #0x28]
+  0x04F97D20: ldr        x9, [sp, #8]
+  0x04F97D24: cmp        x8, x9
+  0x04F97D28: b.ne       #0x4f97d3c
+  0x04F97D2C: ldp        x20, x19, [sp, #0x20]
+  0x04F97D30: ldp        x29, x30, [sp, #0x10]
+  0x04F97D34: add        sp, sp, #0x30
+  0x04F97D38: ret        
+
+
+DONE

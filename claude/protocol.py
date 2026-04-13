@@ -39,6 +39,34 @@ OP_MARCH_ACK         = 0x00B8  # March ACK (1B=ok or 10B with hero IDs)
 OP_SCIENCE_INFO      = 0x00BE  # CMSG_SCIENCE_INFO
 OP_CHAT_HISTORY      = 0x026D  # CMSG_CHAT_HISTORY (u16 channel + messages)
 OP_SOLDIER_INFO      = 0x06C2  # CMSG_SYS_SOLDIER_INFO (u32 count + entries)
+OP_PASSWORD_INFO     = 0x1B8A  # CMSG_PASSWORD_CHECK_RETURN (gate for 0x1B8B)
+OP_PASSWORD_CHECK    = 0x1B8B  # CMSG_PASSWORD_CHECK_REQUEST (challenge-response)
+
+# ══════════════════════════════════════════════════════════════
+#  REWARD/DAILY OPCODES (fire-and-forget, 2B payload)
+# ══════════════════════════════════════════════════════════════
+OP_EVERYDAY_GIFT_NEW       = 0x189D  # Daily gift (fire & forget!)
+OP_ACHIEVEMENT_SCORE       = 0x0226  # Achievement score reward
+OP_LUXURY_REWARD           = 0x0989  # Luxury reward (F&F!)
+OP_KING_ROAD_REWARD        = 0x0993  # King's Road reward
+OP_EXP_REWARD              = 0x0A07  # Championship EXP
+OP_EXTRA_GIFTPACK_NEW      = 0x16B2  # Extra giftpack (F&F CRITICAL!)
+OP_RETURN_EVENT_NEW        = 0x16CE  # Return event reward (F&F CRITICAL!)
+OP_ARENA_CHALLENGE         = 0x05F1  # Arena fight
+OP_ARENA_TIMES_RESTORE     = 0x05EB  # Arena restore (F&F!)
+OP_EXPEDITION_BATTLE       = 0x02B6  # Expedition fight
+OP_LUCKY_TURNTABLE         = 0x039C  # Lucky spin
+OP_WHEEL_TURN              = 0x0E75  # Wheel spin
+OP_DOUBLE_LOTTERY          = 0x1D4D  # Double lottery
+OP_LEAGUEPASS_REWARD       = 0x166C  # Guild Pass reward
+OP_LEAGUEPASS_TASK         = 0x1670  # Guild Pass task
+OP_LEAGUE_BF_REWARD        = 0x07EF  # League battlefield reward
+OP_BIG_BOSS_DONATE         = 0x1F0F  # Guild boss donate
+OP_LOSTLAND_DONATE         = 0x15B7  # Lost Land donate
+OP_SERVER_MISSION          = 0x13BD  # Server mission
+OP_DAILYCONSUME_REWARD     = 0x1453  # Daily consume
+OP_RECHARGE_BONUS          = 0x1774  # Recharge bonus
+OP_EXCHANGE_REWARD         = 0x099F  # Exchange reward
 
 # ══════════════════════════════════════════════════════════════
 #  NEW-STYLE ACTION OPCODES (Encrypted via CMsgCodec)
@@ -256,12 +284,14 @@ TROOPS = {
     'siege_t1': 401, 'siege_t2': 402, 'siege_t3': 403, 'siege_t4': 404,
 }
 
-MARCH_TYPE_GATHER    = 1
-MARCH_TYPE_ATTACK    = 2
-MARCH_TYPE_SCOUT     = 3
-MARCH_TYPE_REINFORCE = 4
-MARCH_TYPE_RALLY     = 5
-MARCH_TYPE_DEFEND    = 6
+# March types (from PCAP analysis - NOT simple enums!)
+# The game uses composite values, not sequential 1-6
+MARCH_TYPE_GATHER    = 0x1749  # PCAP-verified (food tiles)
+MARCH_TYPE_GATHER_W2 = 0x174A  # Wheat level 2 (from test_gather_clean.py)
+MARCH_TYPE_ATTACK    = 2       # UNVERIFIED - needs PCAP confirmation
+MARCH_TYPE_SCOUT     = 3       # UNVERIFIED - needs PCAP confirmation
+MARCH_TYPE_REINFORCE = 5       # UNVERIFIED - needs PCAP confirmation
+MARCH_TYPE_RALLY     = 6       # UNVERIFIED - needs PCAP confirmation
 
 BUILD_OP_UPGRADE     = 1
 BUILD_OP_DEMOLISH    = 2

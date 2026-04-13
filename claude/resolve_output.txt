@@ -1,0 +1,79 @@
+﻿================================================================================
+1. RESOLVE PLT SYMBOLS via .rela.plt
+================================================================================
+  PLT 0x05C6DBA0 (CMsgCodec::Encode (known))
+    GOT: 0x0631FA00 -> Symbol #18657: _ZN9CMsgCodec6EncodeEPhj
+  PLT 0x05C6DBB0 (UNKNOWN used by 0x1B8B packData)
+    GOT: 0x0631FA08 -> Symbol #96200: _ZN9CMsgCodec9NewEncodeEPhj
+  PLT 0x05C6DBC0 (PLT_unknown_2 (called before encoder))
+    GOT: 0x0631FA10 -> Symbol #140728: _ZN9CMsgCodec12getServerKeyEv
+  PLT 0x05C6DBD0 (PLT_write_u16_helper)
+    GOT: 0x0631FA18 -> Symbol #39871: _ZN9CMsgCodec11getMsgIndexEv
+  PLT 0x05C6DBE0 (PLT_write_u64_helper)
+    GOT: 0x0631FA20 -> Symbol #11666: _ZN9CMsgCodec10getCheckIdEv
+
+================================================================================
+2. RODATA at 0x0255B238 (second distribution params)
+================================================================================
+  Bytes: 010000000f270000
+  As u64: 42945377992705 (0x0000270F00000001)
+  As i64: 42945377992705
+  As double: 2.12178359138623e-310
+  As 2╫u32: 1, 9999 (0x00000001, 0x0000270F)
+  As 2╫i32: 1, 9999
+
+  => Second distribution: uniform_int(1, 9999)
+
+================================================================================
+3. EMPTY PASSWORD PATH (0x039FADD0)
+================================================================================
+  0x039FADD0: mov        x0, #-1
+  0x039FADD4: ldr        x8, [x21, #0x28]
+  0x039FADD8: ldr        x9, [sp, #8]
+  0x039FADDC: cmp        x8, x9
+  0x039FADE0: b.eq       #0x39fadbc
+  0x039FADE4: bl         #0x5bdc4a0
+  0x039FADE8: stp        x29, x30, [sp, #-0x30]!
+  0x039FADEC: str        x21, [sp, #0x10]
+  0x039FADF0: stp        x20, x19, [sp, #0x20]
+  0x039FADF4: mov        x29, sp
+  0x039FADF8: ldr        w8, [x0, #0x78]
+  0x039FADFC: mov        x19, x0
+  0x039FAE00: str        w1, [x0, #0x58]
+  0x039FAE04: cbz        w8, #0x39fae20
+  0x039FAE08: cmp        w1, #1
+
+================================================================================
+4. packData FIELD READS from CMSG object (x19)
+================================================================================
+  0x052736E4: ldrh w9, [x19]  => READ u16 from obj+?
+  0x052737C4: ldrh w10, [x19, #2]  => READ u16 from obj+2
+  0x052737FC: ldrb w10, [x19, #6]  => READ u8 from obj+6
+  0x05273830: ldrb w10, [x19, #7]  => READ u8 from obj+7
+  0x05273860: ldrb w10, [x19, #8]  => READ u8 from obj+8
+  0x05273890: ldrb w10, [x19, #9]  => READ u8 from obj+9
+  0x052738C0: ldr x10, [x19, #0x18]  => READ u64 from obj+0x18
+
+================================================================================
+5. VERIFY encodePassword MAGIC constant
+================================================================================
+  MAGIC = 0x000000E8D4A51000 = 1000000000000
+  Is it 1 trillion? True
+
+================================================================================
+6. S2C 0x1B8A PAYLOADS from PCAPs (checking gate byte)
+================================================================================
+  PCAPdroid_25_Mar_07_05_12.pcap: S2C 0x1B8A (21B): 010000000000000000000000000000000000000000
+    byte[0]=0x01 byte[4]=0x00 (gate byte candidate)
+  PCAPdroid_25_Mar_07_29_40.pcap: S2C 0x1B8A (21B): 010000000000000000000000000000000000000000
+    byte[0]=0x01 byte[4]=0x00 (gate byte candidate)
+  PCAPdroid_27_Mar_09_17_04.pcap: S2C 0x1B8A (21B): 010000000000000000000000000000000000000000
+    byte[0]=0x01 byte[4]=0x00 (gate byte candidate)
+  PCAPdroid_28_Mar_10_41_12.pcap: S2C 0x1B8A (21B): 010000000000000000000000000000000000000000
+    byte[0]=0x01 byte[4]=0x00 (gate byte candidate)
+  PCAPdroid_29_Mar_10_53_55.pcap: S2C 0x1B8A (21B): 010000000000000000000000000000000000000000
+    byte[0]=0x01 byte[4]=0x00 (gate byte candidate)
+
+  Totals: S2C 0x1B8A=6, S2C 0x1B8B=0, C2S 0x1B8B=6
+
+DONE

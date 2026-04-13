@@ -1,0 +1,72 @@
+﻿Found 9 PCAP files
+====================================================================================================
+
+PCAPdroid_25_Mar_07_05_12.pcap  SK=0x02677C7E  payload(22B): 6cd2d690276f0ec14661afb239374a676d7a078be580
+  OFFSET6: ck_ok=True v_ok=True
+    plain    = ed02732200000000ffffffffffffffff
+    checkId  = ed02732200000000 (=577962733)
+    password = ffffffffffffffff (=-1)
+    => EMPTY PASSWORD (encodePassword returns -1)
+  STANDARD: ck_ok=True v_ok=False
+    plain    = c4348bd111f19ecf9ecf9dce9dce9dce9dce
+
+PCAPdroid_25_Mar_07_29_40.pcap  SK=0xB4B19AD1  payload(22B): 5d92bab700a1b1a570d5ceea213f353f6b7278d3e388
+  OFFSET6: ck_ok=True v_ok=True
+    plain    = ed02732200000000ffffffffffffffff
+    checkId  = ed02732200000000 (=577962733)
+    password = ffffffffffffffff (=-1)
+    => EMPTY PASSWORD (encodePassword returns -1)
+  STANDARD: ck_ok=False v_ok=False
+    plain    = 8cc5628ce8ac758a758a7489748974897489
+
+PCAPdroid_27_Mar_09_17_04.pcap  SK=0x88587D29  payload(22B): da3d3e3a8d3a8bf65f1ddabd24b3236a6cfc6e86e406
+  OFFSET6: ck_ok=True v_ok=True
+    plain    = ed02732200000000ffffffffffffffff
+    checkId  = ed02732200000000 (=577962733)
+    password = ffffffffffffffff (=-1)
+    => EMPTY PASSWORD (encodePassword returns -1)
+  STANDARD: ck_ok=False v_ok=False
+    plain    = 3eb6ba024022cd00cd00ccffccffccffccff
+
+PCAPdroid_28_Mar_10_41_12.pcap  SK=0x0B46E321  payload(22B): 07921a19aed6c4910627b7d25fc14c05158e01e99d74
+  OFFSET6: ck_ok=True v_ok=True
+    plain    = ed02732200000000ffffffffffffffff
+    checkId  = ed02732200000000 (=577962733)
+    password = ffffffffffffffff (=-1)
+    => EMPTY PASSWORD (encodePassword returns -1)
+  STANDARD: ck_ok=False v_ok=False
+    plain    = ae39e48f6aaff78df78df68cf68cf68cf68c
+
+PCAPdroid_29_Mar_10_53_55.pcap  SK=0x61607E47  payload(22B): 9aee68c473cc854d0b4c3c0294e6c1d1d8ad8c3d5057
+  OFFSET6: ck_ok=True v_ok=True
+    plain    = ed02732200000000ffffffffffffffff
+    checkId  = ed02732200000000 (=577962733)
+    password = ffffffffffffffff (=-1)
+    => EMPTY PASSWORD (encodePassword returns -1)
+  STANDARD: ck_ok=False v_ok=False
+    plain    = 0d61238aa9aa368836883587358735873587
+
+PCAPdroid_30_Mar_19_56_17.pcap  SK=0xBDC1617D  payload(22B): 445212d86f1f900e8dccc15df27a3488b63779643ecd
+  OFFSET6: ck_ok=True v_ok=True
+    plain    = ed02732200000000ffffffffffffffff
+    checkId  = ed02732200000000 (=577962733)
+    password = ffffffffffffffff (=-1)
+    => EMPTY PASSWORD (encodePassword returns -1)
+  STANDARD: ck_ok=False v_ok=False
+    plain    = 8b51d3b959d9e6b7e6b7e5b6e5b6e5b6e5b6
+
+====================================================================================================
+SUMMARY: 6 packets from 9 PCAPs
+====================================================================================================
+  Unique checkId values: 1
+    ed02732200000000 = 577962733 (x6)
+
+  Unique password values: 1
+    ffffffffffffffff = -1 (x6)
+
+  Unique full plaintexts: 1
+    ed02732200000000ffffffffffffffff
+
+  *** getCheckId IS CONSTANT ***
+
+DONE

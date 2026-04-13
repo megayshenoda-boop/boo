@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<userDefaultRoot>
+    <KingdomBountyQuestPosBind>1:127;2:152;3:178;4:228;5:202;6:227;7:253;8:153;9:252;10:277;11:0;12:0</KingdomBountyQuestPosBind>
+    <player_avatar>0,0,,,,0,,0,</player_avatar>
+    <MergePet_TipDialog>true</MergePet_TipDialog>
+    <AUCTION_BID_RECORD></AUCTION_BID_RECORD>
+    <LOOP_BOSS_LOGIN_POP_TIME>1775301595</LOOP_BOSS_LOGIN_POP_TIME>
+</userDefaultRoot>
